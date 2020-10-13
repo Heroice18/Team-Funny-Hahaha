@@ -4,12 +4,11 @@
 #include <vector>
 #include <algorithm>
 
+// based on code from: https://stackoverflow.com/a/236803
 std::vector<std::string> split(std::string input, char delimiter)
 {
     std::istringstream data(input);
-
     std::string temp;
-
     std::vector<std::string> output;
 
     while(std::getline(data, temp, delimiter))
@@ -34,11 +33,27 @@ std::string join(std::vector<std::string> words, char delimiter)
     return out;
 }
 
-std::string cannon(std::string inputPath, std::string workingDir = "")
+std::string cannon(std::string inputPath, std::string workingDir, std::string homeDir)
 {
     auto dirs = split(inputPath, '/');
     std::vector<std::string> final;
-    for(auto it = dirs.begin(); it !=dirs.end(); it++){
+
+    auto it = dirs.begin();
+
+    if(*it == "")
+    {
+        it++;
+    }
+    else if(*it == "~")
+    {
+        it++;
+        final = split(homeDir, '/');
+    }
+    else{
+        final = split(workingDir, '/');
+    }
+
+    for(; it != dirs.end(); it++){
         if(*it == ".."){
             if(!final.empty()){
                 final.pop_back();
@@ -55,5 +70,5 @@ int main(int argc, char * argv[]) {
     std::string path;
     std::cout << "Path: ";
     std::cin >> path;
-    std::cout << "Cannon: " << cannon(path);
+    std::cout << '\n' << "Cannon: " << cannon(path, "/Users/test/current/working/dir", "/Users/test");
 }
