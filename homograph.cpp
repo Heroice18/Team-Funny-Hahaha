@@ -3,6 +3,7 @@
 #include <sstream>
 #include <vector>
 #include <algorithm>
+#include <stdlib.h>
 
 // based on code from: https://stackoverflow.com/a/236803
 std::vector<std::string> split(std::string input, char delimiter)
@@ -33,8 +34,10 @@ std::string join(std::vector<std::string> words, char delimiter)
     return out;
 }
 
-std::string cannon(std::string inputPath, std::string workingDir, std::string homeDir)
+std::string cannon(std::string inputPath, std::string workingDir)
 {
+    std::string homeDir = getenv("HOME");
+
     auto dirs = split(inputPath, '/');
     std::vector<std::string> final;
 
@@ -70,5 +73,5 @@ int main(int argc, char * argv[]) {
     std::string path;
     std::cout << "Path: ";
     std::cin >> path;
-    std::cout << '\n' << "Cannon: " << cannon(path, "/Users/test/current/working/dir", "/Users/test");
+    std::cout << '\n' << "Cannon: " << cannon(path, "/Users/test/current/working/dir") << '\n';
 }
