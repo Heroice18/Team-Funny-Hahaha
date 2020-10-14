@@ -25,18 +25,23 @@ std::string join(std::vector<std::string> words, char delimiter)
     bool first = true;
     for(auto it = words.begin(); it != words.end(); it++)
     {
-        if(!out.empty())
+        if(!first)
         {
             out += delimiter;
+        }
+        else
+        {
+            first = false;
         }
         out += *it;
     }
     return out;
 }
 
-std::string cannon(std::string inputPath, std::string workingDir)
+std::string cannon(std::string inputPath)
 {
     std::string homeDir = getenv("HOME");
+    std::string workingDir = "/Users/test/current/working/dir";
 
     auto dirs = split(inputPath, '/');
     std::vector<std::string> final;
@@ -73,5 +78,5 @@ int main(int argc, char * argv[]) {
     std::string path;
     std::cout << "Path: ";
     std::cin >> path;
-    std::cout << '\n' << "Cannon: " << cannon(path, "/Users/test/current/working/dir") << '\n';
+    std::cout << '\n' << "Cannon: " << cannon(path) << '\n';
 }
