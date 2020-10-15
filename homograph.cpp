@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+// Split a delimited string into a vector of strings;
 // based on code from: https://stackoverflow.com/a/236803
 std::vector<std::string> split(std::string input, char delimiter)
 {
@@ -20,6 +21,7 @@ std::vector<std::string> split(std::string input, char delimiter)
     return output;
 }
 
+// Join a vector of strings into a single string. Invese of split.
 std::string join(std::vector<std::string> words, char delimiter)
 {
     std::string out;
@@ -39,6 +41,8 @@ std::string join(std::vector<std::string> words, char delimiter)
     return out;
 }
 
+// The canonicalization function.
+// Will convert any file path into a simple, absolute path.
 std::string cannon(std::string inputPath)
 {
     std::string homeDir = getenv("HOME");
@@ -54,38 +58,48 @@ std::string cannon(std::string inputPath)
        return "";
     }
 
-    auto dirs = split(inputPath, '/');
-    std::vector<std::string> final;
+    std::vector<std::string> inputDirs = split(inputPath, '/');
+    std::vector<std::string> outputDirs;
 
-    auto it = dirs.begin();
+    auto it = inputDirs.begin();
 
-    if(*it == "")
+    if(*it == "") //absolute path
+    {
+        it++; //skip inital empty string
+    }
+    else if(*it == "~") //path from HOME
     {
         it++;
+        //populate outputDirs from the home path
+        outputDirs = split(homeDir, '/');
+        //remove empty strings from the path
+        remove_if(outputDirs.begin(), outputDirs.end(), [](std::string s){return s=="";});
     }
-    else if(*it == "~")
+    else //relative path
     {
-        it++;
-        final = split(homeDir, '/');
-    }
-    else{
-        final = split(workingDir, '/');
+        outputDirs = split(workingDir, '/');
+        remove_if(outputDirs.begin(), outputDirs.end(), [](std::string s){return s=="";});
     }
 
-    for(; it != dirs.end(); it++){
-        if(*it == ".."){
-            if(!final.empty()){
-                final.pop_back();
+    for(; it != inputDirs.end(); it++)
+    {
+        if(*it == "..")
+        {
+            if(!outputDirs.empty())
+            {
+                outputDirs.pop_back();
             }
         }
-        else if(*it != "."){
-            final.push_back(*it);
+        else if(*it != "." && *it != "")
+        {
+            outputDirs.push_back(*it);
         }
     }
-    return '/' + join(final, '/');
+    return '/' + join(outputDirs, '/');
 }
 
-int main(int argc, char * argv[]) {
+int main(int argc, char * argv[]) 
+{
     std::string path;
     std::cout << "Path: ";
     std::cin >> path;
