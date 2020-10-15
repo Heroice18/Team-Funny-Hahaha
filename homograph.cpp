@@ -4,6 +4,7 @@
 #include <vector>
 #include <algorithm>
 #include <stdlib.h>
+#include <unistd.h>
 
 // based on code from: https://stackoverflow.com/a/236803
 std::vector<std::string> split(std::string input, char delimiter)
@@ -41,7 +42,17 @@ std::string join(std::vector<std::string> words, char delimiter)
 std::string cannon(std::string inputPath)
 {
     std::string homeDir = getenv("HOME");
-    std::string workingDir = "/Users/test/current/working/dir";
+
+    // Get the current working directory (inspired by stackOverflow)
+    // https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
+    std::string workingDir = "";
+    char cwd[PATH_MAX];
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+       workingDir = cwd;
+    } else {
+       std::cerr << "getcwd() failed";
+       return "";
+    }
 
     auto dirs = split(inputPath, '/');
     std::vector<std::string> final;
