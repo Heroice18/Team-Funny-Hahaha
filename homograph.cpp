@@ -42,23 +42,26 @@ std::string join(std::vector<std::string> words, char delimiter)
     return out;
 }
 
+// Get the current working directory (inspired by stackOverflow)
+// https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
+std::string getCurrentWorkingDirectory() {
+
+   std::string result = "";
+   char cwd[PATH_MAX];
+
+   if (getcwd(cwd, sizeof(cwd)) != NULL) {
+      result = cwd;
+   } else {
+      std::cerr << "getcwd() failed";
+   }
+
+   return result;
+}
+
 // The canonicalization function.
 // Will convert any file path into a simple, absolute path.
 std::string cannon(std::string inputPath)
 {
-    std::string homeDir = getenv("HOME");
-
-    // Get the current working directory (inspired by stackOverflow)
-    // https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
-    std::string workingDir = "";
-    char cwd[PATH_MAX];
-    if (getcwd(cwd, sizeof(cwd)) != NULL) {
-       workingDir = cwd;
-    } else {
-       std::cerr << "getcwd() failed";
-       return "";
-    }
-
     std::vector<std::string> inputDirs = split(inputPath, '/');
     std::vector<std::string> outputDirs;
 
@@ -70,6 +73,8 @@ std::string cannon(std::string inputPath)
     }
     else if(*it == "~") //path from HOME
     {
+       std::string homeDir = getenv("HOME");
+
         it++;
         //populate outputDirs from the home path
         outputDirs = split(homeDir, '/');
@@ -78,6 +83,8 @@ std::string cannon(std::string inputPath)
     }
     else //relative path
     {
+       std::string workingDir = getCurrentWorkingDirectory();
+
         outputDirs = split(workingDir, '/');
         outputDirs.erase(remove(outputDirs.begin(), outputDirs.end(), ""), outputDirs.end());
     }
@@ -120,10 +127,7 @@ int main(int argc, char * argv[])
 
     std::cout << "Specify the second filename: ";
     std::cin >> path2;
-    // for debugging purposes, NEEDS TO BE DELETED!
-    std::cout << '\n' << "Cannon: " << cannon(path1) << '\n';
-    std::cout << '\n' << "Cannon: " << cannon(path2) << '\n';
-    
+
     if (isHomograph(path1, path2) == true)
     {
         std::cout << '\n' << "The paths are NOT homographs" << '\n';
@@ -133,5 +137,5 @@ int main(int argc, char * argv[])
         std::cout << '\n' << "The paths are homographs" << '\n';
     }
 
-    
+
 }
