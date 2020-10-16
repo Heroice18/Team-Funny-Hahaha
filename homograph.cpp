@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <stdlib.h>
 #include <unistd.h>
+#define PATH_MAX        4096    /* # chars in a path name including nul */
 
 // Split a delimited string into a vector of strings;
 // based on code from: https://stackoverflow.com/a/236803
@@ -131,6 +132,6 @@ int main(int argc, char * argv[])
     {
         std::cout << '\n' << "The paths are homographs" << '\n';
     }
-    //std::cout << '\n' << homographSet(path1, path2) << '\n';
+
     
 }
