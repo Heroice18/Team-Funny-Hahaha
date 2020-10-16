@@ -46,16 +46,16 @@ std::string join(std::vector<std::string> words, char delimiter)
 // https://stackoverflow.com/questions/298510/how-to-get-the-current-directory-in-a-c-program
 std::string getCurrentWorkingDirectory() {
 
-   std::string result = "";
-   char cwd[PATH_MAX];
+    std::string result = "";
+    char cwd[PATH_MAX];
 
-   if (getcwd(cwd, sizeof(cwd)) != NULL) {
-      result = cwd;
-   } else {
-      std::cerr << "getcwd() failed";
-   }
+    if (getcwd(cwd, sizeof(cwd)) != NULL) {
+        result = cwd;
+    } else {
+        std::cerr << "getcwd() failed";
+    }
 
-   return result;
+    return result;
 }
 
 // The canonicalization function.
@@ -73,7 +73,7 @@ std::string cannon(std::string inputPath)
     }
     else if(*it == "~") //path from HOME
     {
-       std::string homeDir = getenv("HOME");
+        std::string homeDir = getenv("HOME");
 
         it++;
         //populate outputDirs from the home path
@@ -83,7 +83,7 @@ std::string cannon(std::string inputPath)
     }
     else //relative path
     {
-       std::string workingDir = getCurrentWorkingDirectory();
+        std::string workingDir = getCurrentWorkingDirectory();
 
         outputDirs = split(workingDir, '/');
         outputDirs.erase(remove(outputDirs.begin(), outputDirs.end(), ""), outputDirs.end());
