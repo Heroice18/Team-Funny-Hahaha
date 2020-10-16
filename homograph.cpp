@@ -99,22 +99,14 @@ std::string cannon(std::string inputPath)
     return '/' + join(outputDirs, '/');
 }
 
-std::string filenameToCannon(std::string input)
-{
-    return cannon(input);
-}
-
 // returns whether the two paths are the same
-std::string homographSet(std::string path1, std::string path2)
+bool isHomograph(std::string path1, std::string path2)
 {
-    std::string homographTrue = "The paths are homographs";
-    std::string homographFalse = "The paths are NOT homographs";
-    
-    if (filenameToCannon(path1) != filenameToCannon(path2)) {
-        return homographTrue;
+    if (cannon(path1) != cannon(path2)) {
+        return true;
     }
     else
-        return homographFalse;
+        return false;
 }
 
 
@@ -129,9 +121,17 @@ int main(int argc, char * argv[])
     std::cout << "Specify the second filename: ";
     std::cin >> path2;
     // for debugging purposes, NEEDS TO BE DELETED!
-    std::cout << '\n' << "Cannon: " << filenameToCannon(path1) << '\n';
-    std::cout << '\n' << "Cannon: " << filenameToCannon(path2) << '\n';
+    std::cout << '\n' << "Cannon: " << cannon(path1) << '\n';
+    std::cout << '\n' << "Cannon: " << cannon(path2) << '\n';
     
-    std::cout << '\n' << homographSet(path1, path2) << '\n';
+    if (isHomograph(path1, path2) == true)
+    {
+        std::cout << '\n' << "The paths are NOT homographs" << '\n';
+    }
+    else
+    {
+        std::cout << '\n' << "The paths are homographs" << '\n';
+    }
+
     
 }
