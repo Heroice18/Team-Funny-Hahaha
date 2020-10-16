@@ -74,12 +74,12 @@ std::string cannon(std::string inputPath)
         //populate outputDirs from the home path
         outputDirs = split(homeDir, '/');
         //remove empty strings from the path
-        remove_if(outputDirs.begin(), outputDirs.end(), [](std::string s){return s=="";});
+        outputDirs.erase(remove(outputDirs.begin(), outputDirs.end(), ""), outputDirs.end());
     }
     else //relative path
     {
         outputDirs = split(workingDir, '/');
-        remove_if(outputDirs.begin(), outputDirs.end(), [](std::string s){return s=="";});
+        outputDirs.erase(remove(outputDirs.begin(), outputDirs.end(), ""), outputDirs.end());
     }
 
     for(; it != inputDirs.end(); it++)
