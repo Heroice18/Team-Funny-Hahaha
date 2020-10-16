@@ -21,7 +21,7 @@ std::vector<std::string> split(std::string input, char delimiter)
     return output;
 }
 
-// Join a vector of strings into a single string. Invese of split.
+// Join a vector of strings into a single string. Inverse of split.
 std::string join(std::vector<std::string> words, char delimiter)
 {
     std::string out;
@@ -98,10 +98,39 @@ std::string cannon(std::string inputPath)
     return '/' + join(outputDirs, '/');
 }
 
-int main(int argc, char * argv[]) 
+std::string filenameToCannon(std::string input)
 {
-    std::string path;
-    std::cout << "Path: ";
-    std::cin >> path;
-    std::cout << '\n' << "Cannon: " << cannon(path) << '\n';
+    return cannon(input);
+}
+
+// returns whether the two paths are the same
+std::string homographSet(std::string path1, std::string path2)
+{
+    std::string homographTrue = "The paths are homographs";
+    std::string homographFalse = "The paths are NOT homographs";
+    
+    if (filenameToCannon(path1) == filenameToCannon(path2)) {
+        return homographTrue;
+    }
+    else
+        return homographFalse;
+}
+
+
+int main(int argc, char * argv[])
+{
+    std::string path1;
+    std::string path2;
+
+    std::cout << "Specify the first filename: ";
+    std::cin >> path1;
+
+    std::cout << "Specify the second filename: ";
+    std::cin >> path2;
+    // for debugging purposes, NEEDS TO BE DELETED!
+    std::cout << '\n' << "Cannon: " << filenameToCannon(path1) << '\n';
+    std::cout << '\n' << "Cannon: " << filenameToCannon(path2) << '\n';
+    
+    std::cout << '\n' << homographSet(path1, path2) << '\n';
+    
 }
