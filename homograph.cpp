@@ -109,7 +109,7 @@ std::string homographSet(std::string path1, std::string path2)
     std::string homographTrue = "The paths are homographs";
     std::string homographFalse = "The paths are NOT homographs";
     
-    if (filenameToCannon(path1) == filenameToCannon(path2)) {
+    if (filenameToCannon(path1) != filenameToCannon(path2)) {
         return homographTrue;
     }
     else
