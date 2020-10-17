@@ -109,11 +109,7 @@ std::string cannon(std::string inputPath)
 // returns whether the two paths are the same
 bool isHomograph(std::string path1, std::string path2)
 {
-    if (cannon(path1) != cannon(path2)) {
-        return true;
-    }
-    else
-        return false;
+    return cannon(path1) == cannon(path2);
 }
 
 
@@ -128,14 +124,12 @@ int main(int argc, char * argv[])
     std::cout << "Specify the second filename: ";
     std::cin >> path2;
 
-    if (isHomograph(path1, path2) == true)
-    {
-        std::cout << '\n' << "The paths are NOT homographs" << '\n';
-    }
-    else
+    if (isHomograph(path1, path2))
     {
         std::cout << '\n' << "The paths are homographs" << '\n';
     }
-
-
+    else
+    {
+        std::cout << '\n' << "The paths are NOT homographs" << '\n';
+    }
 }
