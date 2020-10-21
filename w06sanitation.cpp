@@ -5,11 +5,11 @@
 using namespace std;
 
 // Accepts two strings and returns a query string
-string generateQuery(string name, string password)
+string generateQuery(string username, string password)
 {
     ostringstream builder;
     builder << "SELECT username FROM authentication" << endl
-        << "WHERE username = '" << name << "' "
+        << "WHERE username = '" << username << "' "
         << "AND password = '" << password << "'";
     return builder.str();
 }
@@ -22,7 +22,7 @@ int main()
     cout << "Please enter your username: ";
     cin >> username;
 
-    cout << "\nPlease enter your password: ";
+    cout << "Please enter your password: ";
     cin >> password;
 
     // testing input
