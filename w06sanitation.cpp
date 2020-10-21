@@ -1,26 +1,31 @@
-//This is the start of the file
-
 #include <iostream>
+#include <string>
+#include <sstream>
 
-// accepts two strings and returns them as a single string
-std::string query(std::string username, std::string password)
+using namespace std;
+
+// Accepts two strings and returns a query string
+string generateQuery(string username, string password)
 {
-    std::string userAndPass = username + password;
-    return userAndPass;
+    ostringstream builder;
+    builder << "SELECT username FROM authentication" << endl
+        << "WHERE username = '" << username << "' "
+        << "AND password = '" << password << "'";
+    return builder.str();
 }
 
 int main()
 {
-    std::string username;
-    std::string password;
+    string username;
+    string password;
 
-    std::cout << "Please enter your username: ";
-    std::cin >> username;
+    cout << "Please enter your username: ";
+    cin >> username;
 
-    std::cout << "\nPlease enter your password: ";
-    std::cin >> password;
+    cout << "Please enter your password: ";
+    cin >> password;
 
     // testing input
-    std::cout << "\n" << query(username, password) << "\n";
+    cout << "\n" << generateQuery(username, password) << "\n";
     return 0;
 }
