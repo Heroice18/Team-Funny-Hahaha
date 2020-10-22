@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <set>
 
 using namespace std;
 
@@ -19,10 +20,65 @@ string weakMitigation()
     //TO DO
 }
 
-string strongMitigation()
+/*
+ * Character Is Whitelisted :: returns true if the provided character
+ * is whitelisted else returns false.
+ */
+bool characterIsWhitelisted(char character)
 {
-    //TO DO
+   bool result = false; // Start with the assumption that it is not allowed.
+
+   char miscCharacters[] = {'!', '@', '#', '$', '%',
+      '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', '{', ']',
+      '}', ':', ';', ',', '<', '.', '>', '/', '?', ' ', '~'};
+
+   int nCharacters = sizeof(miscCharacters) / sizeof(miscCharacters[0]);
+
+   set<char> miscAllowedCharactersSet(miscCharacters, miscCharacters + nCharacters);
+
+   if ('A' <= character && character <= 'Z'
+       || 'a' <= character && character <= 'z'
+       || '0' <= character && character <= '9'
+       || miscAllowedCharactersSet.find(character) != miscAllowedCharactersSet.end()
+       )
+   {
+       result = true;
+   }
+   return result;
 }
+
+/*
+ * Sanitize String Strong :: Sanitize the input string by only
+ * keeping whitelisted characters.
+ */
+string sanitizeStringStrong(string input)
+{
+   string output = "";
+   for (int i = 0; i < input.length(); ++i)
+   {
+       if (characterIsWhitelisted(input[i]))
+       {
+           output += input[i];
+       }
+   }
+   return output;
+}
+
+/*
+ * Use Strong Mitigation :: Recieves a username and password by referance
+ *     and sanitizes them by removing characters that are not whitelisted.
+ */
+void useStrongMitigation(string & username, string & password)
+{
+   // Sanitize Username and password
+   string sanitizedUsername = sanitizeStringStrong(username);
+   string sanitizedPassword = sanitizeStringStrong(password);
+
+   // Overwrite username and password with sanitized strings.
+   username = sanitizedUsername;
+   password = sanitizedPassword;
+}
+
 // Displays a menu of attacks the user can select
 void displayAttackMenu()
 {
@@ -100,7 +156,7 @@ int main()
         break;
     case 2:
         // Strong Mitigation
-        //strongMitigation();
+        useStrongMitigation(username, password);
         break;
     case 3:
         // No Mitigation
