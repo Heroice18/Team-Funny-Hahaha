@@ -75,7 +75,6 @@ void useWeakMitigation(string & username, string & password)
  */
 bool characterIsWhitelisted(char character)
 {
-   bool result = false; // Start with the assumption that it is not allowed.
 
    static char miscCharacters[] = {'!', '@', '#', '$', '%',
       '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', '{', ']',
