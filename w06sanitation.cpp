@@ -2,6 +2,7 @@
 #include <string>
 #include <sstream>
 #include <set>
+#include <algorithm>
 
 using namespace std;
 
@@ -15,10 +16,59 @@ string generateQuery(string username, string password)
     return builder.str();
 }
 
-string weakMitigation()
+/*
+ * Character is blacklisted
+ * Return if a character is blacklisted or not
+ */
+bool characterIsBlackListed(char character)
 {
-    //TO DO
+    // set up blacklist
+    char blacklist[] = {'\'', '|', '=', '+', '*', '`', ''};
+
+    // get blacklist size
+    size_t blacklistSize = sizeof(blacklist) / sizeof(int);
+    // get end char in blacklist
+    int *end = blacklist + blacklistSize;
+    // find the value function input
+    int *result = std::find(blacklist, end, character);
+    if (result != end) {
+        return true
+    else
+        return false
 }
+
+/*
+ * Sanitize weak: takes in a string and returns a string of
+ * non blacklisted characters 
+ */
+string sanitizeWeak(string input)
+{
+    // set up string to take sanitized input
+    string output = "";
+    // iterate through everycharacher in the string
+    for (int i = 0; i < input.length(); ++i)
+    {
+        // if the character is not blacklisted keep it
+        if (characterIsBlacklisted(input[i]) != true)
+        {
+            output += input[i];
+        }
+    }
+    // return list of non blacklisted characterss
+    return output;
+}
+
+/*
+ * Weak mitigation
+ */
+void weakMitigation( string & username, string & password)
+{
+    //sanitize username and password with weak mitigation
+    string sanitizedUsername = sanitizeWeak(username)
+    string sanitizedUsername = sanitizeWeak(username)
+
+}
+
 
 /*
  * Character Is Whitelisted :: returns true if the provided character
@@ -102,6 +152,8 @@ void displayMitigationMenu()
     cout << "\tNo Mitigation        -- type 3\n";
     cout << "----------------------------------------------\n";
 }
+
+
 int main()
 {
     string username;
@@ -152,7 +204,7 @@ int main()
     {
     case 1:
         // Weak Mitigation
-        //weakMitigation();
+        weakMitigation(username, password);
         break;
     case 2:
         // Strong Mitigation
