@@ -7,13 +7,13 @@
 using namespace std;
 
 // Accepts two strings and returns a query string
-string generateQuery(string username, string password)
+string generateQuery(const string& username, const string& password)
 {
-    ostringstream builder;
-    builder << "SELECT username FROM authentication" << endl
-        << "WHERE username = '" << username << "' "
-        << "AND password = '" << password << "'";
-    return builder.str();
+    
+    return string("SELECT username FROM authentication\n")
+        + "WHERE username = '" + username + "' "
+        + "AND password = '" + password + "'";
+    
 }
 
 /*
@@ -42,12 +42,13 @@ string sanitizeWeak(string input)
     // set up string to take sanitized input
     string output = "";
     // iterate through everycharacher in the string
-    for (int i = 0; i < input.length(); ++i)
+    // needs a new for loop because it is not the best way to do it
+    for (auto it = input.begin(); it != input.end(); it++)
     {
         // if the character is not blacklisted keep it
-        if (!characterIsBlacklisted(input[i]))
+        if (!characterIsBlacklisted(*it))
         {
-            output += input[i];
+            output += *it;
         }
     }
     // return list of non blacklisted characterss
@@ -81,19 +82,16 @@ bool characterIsWhitelisted(char character)
       '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', '{', ']',
       '}', ':', ';', ',', '<', '.', '>', '/', '?', ' ', '~'};
 
-   int nCharacters = sizeof(miscCharacters) / sizeof(miscCharacters[0]);
+   static int nCharacters = sizeof(miscCharacters) / sizeof(miscCharacters[0]);
 
    static set<char> miscAllowedCharactersSet(miscCharacters, miscCharacters + nCharacters);
 
-   if ('A' <= character && character <= 'Z'
+   return ('A' <= character && character <= 'Z'
        || 'a' <= character && character <= 'z'
        || '0' <= character && character <= '9'
        || miscAllowedCharactersSet.find(character) != miscAllowedCharactersSet.end()
-       )
-   {
-       result = true;
-   }
-   return result;
+       );
+   
 }
 
 /*
@@ -103,11 +101,11 @@ bool characterIsWhitelisted(char character)
 string sanitizeStrong(string input)
 {
    string output = "";
-   for (int i = 0; i < input.length(); ++i)
+   for (auto it = input.begin(); it != input.end(); it++)
    {
-       if (characterIsWhitelisted(input[i]))
+       if (characterIsWhitelisted(*it))
        {
-           output += input[i];
+           output += *it;
        }
    }
    return output;
