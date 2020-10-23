@@ -20,29 +20,24 @@ string generateQuery(string username, string password)
  * Character is blacklisted
  * Return if a character is blacklisted or not
  */
-bool characterIsBlackListed(char character)
+bool characterIsBlacklisted(char character)
 {
     // set up blacklist
-    char blacklist[] = {'\'', '|', '=', '+', '*', '`', ''};
+    static char blacklistArray[] = {'\'', '|', '=', '+', '*', '`', '"'};
 
-    // get blacklist size
-    size_t blacklistSize = sizeof(blacklist) / sizeof(int);
-    // get end char in blacklist
-    int *end = blacklist + blacklistSize;
-    // find the value function input
-    int *result = std::find(blacklist, end, character);
-    if (result != end)
-        return true
-    else
-        return false
+    static int nCharacters = sizeof(blacklistArray) / sizeof(blacklistArray[0]);
+
+    static set<char> blacklist(blacklistArray, blacklistArray + nCharacters);
+    return blacklist.find(character) != blacklist.end();
 }
 
 /*
  * Sanitize weak: takes in a string and returns a string of
- * non blacklisted characters 
+ * non blacklisted characters
  */
 string sanitizeWeak(string input)
 {
+
     // set up string to take sanitized input
     string output = "";
     // iterate through everycharacher in the string
@@ -64,8 +59,8 @@ string sanitizeWeak(string input)
 void weakMitigation( string & username, string & password)
 {
     //sanitize username and password with weak mitigation
-    string sanitizedUsername = sanitizeWeak(username)
-    string sanitizedUsername = sanitizeWeak(username)
+    string sanitizedUsername = sanitizeWeak(username);
+    string sanitizedPassword = sanitizeWeak(password);
 
 }
 
@@ -78,13 +73,13 @@ bool characterIsWhitelisted(char character)
 {
    bool result = false; // Start with the assumption that it is not allowed.
 
-   char miscCharacters[] = {'!', '@', '#', '$', '%',
+   static char miscCharacters[] = {'!', '@', '#', '$', '%',
       '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', '{', ']',
       '}', ':', ';', ',', '<', '.', '>', '/', '?', ' ', '~'};
 
    int nCharacters = sizeof(miscCharacters) / sizeof(miscCharacters[0]);
 
-   set<char> miscAllowedCharactersSet(miscCharacters, miscCharacters + nCharacters);
+   static set<char> miscAllowedCharactersSet(miscCharacters, miscCharacters + nCharacters);
 
    if ('A' <= character && character <= 'Z'
        || 'a' <= character && character <= 'z'
@@ -101,7 +96,7 @@ bool characterIsWhitelisted(char character)
  * Sanitize String Strong :: Sanitize the input string by only
  * keeping whitelisted characters.
  */
-string sanitizeStringStrong(string input)
+string sanitizeStrong(string input)
 {
    string output = "";
    for (int i = 0; i < input.length(); ++i)
@@ -121,8 +116,8 @@ string sanitizeStringStrong(string input)
 void useStrongMitigation(string & username, string & password)
 {
    // Sanitize Username and password
-   string sanitizedUsername = sanitizeStringStrong(username);
-   string sanitizedPassword = sanitizeStringStrong(password);
+   string sanitizedUsername = sanitizeStrong(username);
+   string sanitizedPassword = sanitizeStrong(password);
 
    // Overwrite username and password with sanitized strings.
    username = sanitizedUsername;
