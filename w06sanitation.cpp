@@ -56,7 +56,7 @@ string sanitizeWeak(string input)
 /*
  * Weak mitigation
  */
-void weakMitigation(string & username, string & password)
+void useWeakMitigation(string & username, string & password)
 {
     //sanitize username and password with weak mitigation
     string sanitizedUsername = sanitizeWeak(username);
@@ -202,7 +202,7 @@ int main()
     {
     case 1:
         // Weak Mitigation
-        weakMitigation(username, password);
+        useWeakMitigation(username, password);
         break;
     case 2:
         // Strong Mitigation
