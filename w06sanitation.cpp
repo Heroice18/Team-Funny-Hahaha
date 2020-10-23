@@ -31,7 +31,7 @@ bool characterIsBlackListed(char character)
     int *end = blacklist + blacklistSize;
     // find the value function input
     int *result = std::find(blacklist, end, character);
-    if (result != end) {
+    if (result != end)
         return true
     else
         return false
