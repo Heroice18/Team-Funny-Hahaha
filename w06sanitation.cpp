@@ -8,11 +8,11 @@ using namespace std;
 // Accepts two strings and returns a query string
 string generateQuery(const string& username, const string& password)
 {
-    
+
     return string("SELECT username FROM authentication\n")
         + "WHERE username = '" + username + "' "
         + "AND password = '" + password + "'";
-    
+
 }
 
 /*
@@ -75,8 +75,6 @@ void useWeakMitigation(string & username, string & password)
  */
 bool characterIsWhitelisted(char character)
 {
-   bool result = false; // Start with the assumption that it is not allowed.
-
    static char miscCharacters[] = {'!', '@', '#', '$', '%',
       '^', '&', '*', '(', ')', '-', '_', '=', '+', '[', '{', ']',
       '}', ':', ';', ',', '<', '.', '>', '/', '?', ' ', '~'};
@@ -90,7 +88,6 @@ bool characterIsWhitelisted(char character)
        || '0' <= character && character <= '9'
        || miscAllowedCharactersSet.find(character) != miscAllowedCharactersSet.end()
        );
-   
 }
 
 /*
