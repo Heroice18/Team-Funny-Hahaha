@@ -28,6 +28,7 @@ bool characterIsBlacklisted(char character)
     static int nCharacters = sizeof(blacklistArray) / sizeof(blacklistArray[0]);
 
     static set<char> blacklist(blacklistArray, blacklistArray + nCharacters);
+
     return blacklist.find(character) != blacklist.end();
 }
 
@@ -44,7 +45,7 @@ string sanitizeWeak(string input)
     for (int i = 0; i < input.length(); ++i)
     {
         // if the character is not blacklisted keep it
-        if (characterIsBlacklisted(input[i]) != true)
+        if (!characterIsBlacklisted(input[i]))
         {
             output += input[i];
         }
@@ -56,11 +57,14 @@ string sanitizeWeak(string input)
 /*
  * Weak mitigation
  */
-void weakMitigation( string & username, string & password)
+void weakMitigation(string & username, string & password)
 {
     //sanitize username and password with weak mitigation
     string sanitizedUsername = sanitizeWeak(username);
     string sanitizedPassword = sanitizeWeak(password);
+
+    username = sanitizedUsername;
+    password = sanitizedPassword;
 
 }
 
