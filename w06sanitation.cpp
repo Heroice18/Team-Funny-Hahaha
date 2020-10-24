@@ -60,11 +60,8 @@ string sanitizeWeak(string input)
 void useWeakMitigation(string & username, string & password)
 {
     //sanitize username and password with weak mitigation
-    string sanitizedUsername = sanitizeWeak(username);
-    string sanitizedPassword = sanitizeWeak(password);
-
-    username = sanitizedUsername;
-    password = sanitizedPassword;
+    username = sanitizeWeak(username);
+    password = sanitizeWeak(password);
 
 }
 
@@ -114,12 +111,8 @@ string sanitizeStrong(string input)
 void useStrongMitigation(string & username, string & password)
 {
    // Sanitize Username and password
-   string sanitizedUsername = sanitizeStrong(username);
-   string sanitizedPassword = sanitizeStrong(password);
-
-   // Overwrite username and password with sanitized strings.
-   username = sanitizedUsername;
-   password = sanitizedPassword;
+   username = sanitizeStrong(username);
+   password = sanitizeStrong(password);
 }
 
 // Displays a menu of attacks the user can select
