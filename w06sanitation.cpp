@@ -11,7 +11,7 @@ string generateQuery(const string& username, const string& password)
 
     return string("SELECT authenticate FROM passwordList\n")
         + "WHERE username = '" + username + "' "
-        + "AND password = '" + password + "'";
+        + "AND password = '" + password + "';";
 
 }
 
