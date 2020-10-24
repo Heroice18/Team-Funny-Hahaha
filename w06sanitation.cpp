@@ -22,7 +22,7 @@ string generateQuery(const string& username, const string& password)
 bool characterIsBlacklisted(char character)
 {
     // set up blacklist
-    static char blacklistArray[] = {'\'', '|', '=', '+', '*', '`', '"'};
+    static char blacklistArray[] = {'\'', '|', '=', '+', '*', '`', '"', ';', '-'};
 
     static int nCharacters = sizeof(blacklistArray) / sizeof(blacklistArray[0]);
 
