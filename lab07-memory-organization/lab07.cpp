@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <string.h>
+#include <cassert>
 using namespace std;
 
 void one(long number);
@@ -93,26 +95,55 @@ void two(long number)              // 345678
         << "-------------------+"
         << "-------------------+"
         << "-----------------+\n";
-   for (long i = 24; i >= -4; i--)   // You may need to change 24 to another number
+   for (long i = 30; i >= -4; i--)   // You may need to change 24 to another number
    {
-      ////////////////////////////////////////////////
-      // Insert code here to display the callstack
+      cout << '[' << setw(2) << i << ']'
+            << setw(15) << (&bow + i)
+            << "  0x" 
+            << setw(16) << setfill('0') << hex << *(&bow + i)
+            << setw(20) << setfill(' ') << dec << *(&bow + i)
+            << setw(18) << displayCharArray((char*) (&bow + i))
+            << endl;
+   }
+   
+   int foundText = 0;
+   int foundNum = 0;
+   int foundFunction = 0;
+   int foundCharPointer = 0;
+   for (long i = 30; i >= -4; i--) 
+   {
+      // change text in main() to "*main**"
+      if (*(&bow + i) == *(long*)("*MAIN**"))
+      {
+         strcpy((char*) (&bow + i), "*main**"); 
+         ++foundText;    
+      }
+      
+      // change number in main() to 654321
+      if (*(&bow + i) == 123456)
+      {
+         *(&bow + i) = 654321;
+         ++foundNum;
+      }
 
-      //
-      ////////////////////////////////////////////////
+      // change pointerFunction in main() to point to pass
+      if (*(&bow + i) == (long)&fail)
+      {
+         *(&bow + i) = (long)&pass;
+         ++foundFunction;
+      }
+
+      // change message in main() to point to passMessage
+      if (*(&bow + i) == (long)failMessage)
+      {
+         *(&bow + i) = (long)passMessage;
+         ++foundCharPointer;
+      }
    }
 
-   ////////////////////////////////////////////////
-   // Insert code here to change the variables in main()
-
-   // change text in main() to "*main**"
-
-   // change number in main() to 654321
-
-   // change pointerFunction in main() to point to pass
-
-   // change message in main() to point to passMessage
-
-   //
-   ////////////////////////////////////////////////
+   // Making sure that we have found the specified values exactly once
+   assert(foundText == 1);
+   assert(foundNum == 1);
+   assert(foundFunction == 1);
+   assert(foundCharPointer == 1);
 }

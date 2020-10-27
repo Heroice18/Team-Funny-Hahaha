@@ -1,8 +1,15 @@
-#include<iostream>
+#include <iostream>
+
+using namespace std;
 
 int main(){
-   void* code = main;
+   void* code = (void*)&main;
    void* stack = &code;
-   void* heam = new long;
+   void* heap = new long;
+
+   cout << "code address: " << code << "\n";
+   cout << "stack address: " << stack << "\n";
+   cout << "heap address: " << heap << "\n";
+   
    return 0;
 }
