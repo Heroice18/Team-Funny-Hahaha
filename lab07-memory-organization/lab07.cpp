@@ -82,35 +82,17 @@ void two(long number)              // 345678
    char text[8] = "**TWO**";
    long * pLong = NULL;
    char * pChar = NULL;
-
-   // header for our table. Use these setw() offsets in your table
-   cout << '[' << setw(2) << 'i' << ']'
-        << setw(15) << "address"
-        << setw(20) << "hexadecimal"
-        << setw(20) << "decimal"
-        << setw(18) << "characters"
-        << endl;
-   cout << "----+"
-        << "---------------+"
-        << "-------------------+"
-        << "-------------------+"
-        << "-----------------+\n";
-   for (long i = 30; i >= -4; i--)   // You may need to change 24 to another number
-   {
-      cout << '[' << setw(2) << i << ']'
-            << setw(15) << (&bow + i)
-            << "  0x" 
-            << setw(16) << setfill('0') << hex << *(&bow + i)
-            << setw(20) << setfill(' ') << dec << *(&bow + i)
-            << setw(18) << displayCharArray((char*) (&bow + i))
-            << endl;
-   }
    
    int foundText = 0;
    int foundNum = 0;
    int foundFunction = 0;
    int foundCharPointer = 0;
-   for (long i = 30; i >= -4; i--) 
+   long i=0;
+
+   while (foundText == 0 ||
+            foundNum == 0 ||
+            foundFunction == 0 ||
+            foundCharPointer == 0) 
    {
       // change text in main() to "*main**"
       if (*(&bow + i) == *(long*)("*MAIN**"))
@@ -139,6 +121,13 @@ void two(long number)              // 345678
          *(&bow + i) = (long)passMessage;
          ++foundCharPointer;
       }
+
+      // increement i
+      i++;
+
+      // emergency exit
+      if (i>100)
+         break;
    }
 
    // Making sure that we have found the specified values exactly once
@@ -146,4 +135,29 @@ void two(long number)              // 345678
    assert(foundNum == 1);
    assert(foundFunction == 1);
    assert(foundCharPointer == 1);
+
+
+   // Show call stack after changes have been made
+   // header for our table. Use these setw() offsets in your table
+   cout << '[' << setw(2) << 'i' << ']'
+        << setw(15) << "address"
+        << setw(20) << "hexadecimal"
+        << setw(20) << "decimal"
+        << setw(18) << "characters"
+        << endl;
+   cout << "----+"
+        << "---------------+"
+        << "-------------------+"
+        << "-------------------+"
+        << "-----------------+\n";
+   for (long j = i; j >= -4; j--)   // You may need to change 24 to another number
+   {
+      cout << '[' << setw(2) << j << ']'
+            << setw(15) << (&bow + j)
+            << "  0x" 
+            << setw(16) << setfill('0') << hex << *(&bow + j)
+            << setw(20) << setfill(' ') << dec << *(&bow + j)
+            << setw(18) << displayCharArray((char*) (&bow + j))
+            << endl;
+   }
 }
