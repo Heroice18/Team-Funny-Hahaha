@@ -146,10 +146,10 @@ void two(long number)              // 345678
    
 
    // Making sure that we have found the specified values exactly once
-   //assert(foundText == 1);
-   // assert(foundNum == 1);
-   // assert(foundFunction == 1);
-   // assert(foundCharPointer == 1);
+   assert(foundText == 1);
+   assert(foundNum == 1);
+   assert(foundFunction == 1);
+   assert(foundCharPointer == 1);
 
 
    // Show call stack after changes have been made
@@ -176,5 +176,5 @@ void two(long number)              // 345678
             << endl;
    }
 
-   //cout << "size of: " << sizeof(size_t);
+
 }
