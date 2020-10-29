@@ -108,11 +108,6 @@ void two(long number)              // 345678
          }
       }
       
-      // if (*(&bow + i) == *(size_t*)("*MAIN**"))
-      // {
-      //    strcpy((char*) (&bow + i), "*main**"); 
-      //    ++foundText;    
-      // }
       
       // change number in main() to 654321
       if (*(&bow + i) == 123456)
