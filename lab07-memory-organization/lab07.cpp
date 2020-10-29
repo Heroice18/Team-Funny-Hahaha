@@ -78,7 +78,7 @@ void one(long number)               // 234567
 
 void two(long number)              // 345678
 {
-   cout << "Check" << endl;
+   
    // start your display of the stack from this point
    size_t bow = number + 111111;     // 456789
    char text[8] = "**TWO**";
