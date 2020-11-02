@@ -45,7 +45,7 @@ void arcExploit()
    arcVunerability();
 }
 
-Class Vulnerability
+class Vulnerability
 {
 };
 
