@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 /****************************************
  * ARRAY VULNERABILTY
  * 1. There must be an array and an array index variable
@@ -37,29 +40,36 @@ void arcVulnerability()
 
 void arcWorking()
 {
-   arcVunerability();
+   arcVulnerability();
 }
 
 void arcExploit()
 {
-   arcVunerability();
+   arcVulnerability();
 }
 
-Class Vulnerability
+class Vulnerability
 {
 };
 
 void vtableWorking()
 {
    Vulnerability test;
-   test.vunerable();
+   // test.vunerable();
 }
 
 void vtableExploit()
 {
    Vulnerability test;
-   test.vunerable();
+   // test.vunerable();
 }
+
+/****************************************
+ * STACK VULNERABILTY
+ * 1.
+ * 2.
+ * 3. There must not be bounds checking on the array index variable.
+ ****************************************/
 
 void stackVulnerability()
 {
@@ -117,7 +127,22 @@ void ansiExploit()
    ansiVulnerability();
 }
 
+// Displays a menu of vulnerabilities
+void displayVulnerabilitiesMenu()
+{
+   cout << "\nWhat kind of vulnerability would you like demonstrated?\n";
+   cout << "------------------------------------------\n";
+   cout << "\tArray Index              ---  1\n";
+   cout << "\tARC Injection            ---  2\n";
+   cout << "\tVTable Spraying          ---  3\n";
+   cout << "\tStack Smashing           ---  4\n";
+   cout << "\tHeap Spraying            ---  5\n";
+   cout << "\tInteger Overflow         ---  6\n";
+   cout << "\tANSI-Unicode Conversion  ---  7\n";
+   cout << "------------------------------------------\n";
+}
 int main()
 {
+   displayVulnerabilitiesMenu();
    return 0;
 }
