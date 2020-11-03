@@ -195,7 +195,7 @@ void heapExploit()
  *     be reachable through external input. This sentinel is a variable
  *     used to make the security decision from the first requirement.
  * ******************************************/
-void integerVulnerability(size_t numDigits)
+void intVulnerability(size_t numDigits)
 {
    cout << "Welcome to the HighScore storer!\n";
    cout << "This program will store your high score as a char array\n";
@@ -237,7 +237,7 @@ void integerWorking()
 void integerExploit()
 {
    //This number will overflow an integer and appear negative
-   integerVulnerability(3333333333);
+   intVulnerability(3333333333);
 }
 
 /**********************************************
