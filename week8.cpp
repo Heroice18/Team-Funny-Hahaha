@@ -99,18 +99,18 @@ void heapExploit()
    heapVulnerability();
 }
 
-void intVulnerability()
+void integerVulnerability()
 {
 }
 
 void integerWorking()
 {
-   intVulnerability();
+   integerVulnerability();
 }
 
 void integerExploit()
 {
-   intVulnerability();
+   integerVulnerability();
 }
 
 void ansiVulnerability()
@@ -139,10 +139,54 @@ void displayVulnerabilitiesMenu()
    cout << "\tHeap Spraying            ---  5\n";
    cout << "\tInteger Overflow         ---  6\n";
    cout << "\tANSI-Unicode Conversion  ---  7\n";
+   cout << "\tQUIT                     ---  q\n";
    cout << "------------------------------------------\n";
+   cout << "--> ";
 }
 int main()
 {
-   displayVulnerabilitiesMenu();
+   bool quit = false;
+   while(!quit)
+   {
+      char selection = ' ';
+      string input = "";
+      displayVulnerabilitiesMenu();
+      cin >> input;
+
+      if (input.length() == 1)
+         selection = input[0];
+
+      switch (selection)
+      {
+      case '1':
+         arrayVulnerability();
+         break;
+      case '2':
+         arcVulnerability();
+         break;
+      case '3':
+         // vtableVulnerability();
+         break;
+      case '4':
+         stackVulnerability();
+         break;
+      case '5':
+         heapVulnerability();
+         break;
+      case '6':
+         integerVulnerability();
+         break;
+      case '7':
+         ansiVulnerability();
+         break;
+      case 'q':
+      case 'Q':
+         quit = true;
+         break;
+      default:
+         cout << "Invalid input\n";
+      }
+   }
+
    return 0;
 }
