@@ -217,13 +217,13 @@ void intVulnerability(size_t numDigits)
 
 /* ********************************************
  * Integer Working
- * Calls integerVulnerability() in a way that does not
+ * Calls intVulnerability() in a way that does not
  * yield unexpected behavior
  * ********************************************/
 void integerWorking()
 {
-   integerVulnerability(5);
-   integerVulnerability(12);
+   intVulnerability(5);
+   intVulnerability(12);
 }
 
 /* *******************************************
