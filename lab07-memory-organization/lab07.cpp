@@ -1,6 +1,8 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
+#include <string.h>
+#include <cassert>
 using namespace std;
 
 void one(long number);
@@ -51,7 +53,7 @@ int main()
 string displayCharArray(const char * p)
 {
    string output;
-   for (int i = 0; i < 8; i++)
+   for (int i = 0; i < sizeof(size_t); i++)
        output += string(" ") + (p[i] >= ' ' && p[i] <= 'z' ? p[i] : '.');
    return output;
 }
@@ -73,14 +75,79 @@ void one(long number)               // 234567
 /**********************************************
  * TWO : The bottom of the call stack
  **********************************************/
+
 void two(long number)              // 345678
 {
+   
    // start your display of the stack from this point
-   long bow = number + 111111;     // 456789
+   size_t bow = number + 111111;     // 456789
    char text[8] = "**TWO**";
    long * pLong = NULL;
    char * pChar = NULL;
+   
+   int foundText = 0;
+   int foundNum = 0;
+   int foundFunction = 0;
+   int foundCharPointer = 0;
+   long i=0;
 
+   while (foundText == 0 ||
+            foundNum == 0 ||
+            foundFunction == 0 ||
+            foundCharPointer == 0) 
+   {
+      // change text in main() to "*main**"
+      pChar = (char *)(&bow + i);
+      for (int j = 0; j < sizeof(size_t); j++)
+      {
+         
+         if (!strcmp("*MAIN**", pChar + j))
+         {
+            strcpy((pChar + j), "*main**"); 
+            ++foundText;    
+         }
+      }
+      
+      
+      // change number in main() to 654321
+      if (*(&bow + i) == 123456)
+      {
+         *(&bow + i) = 654321;
+         ++foundNum;
+      }
+
+      // change pointerFunction in main() to point to pass
+      if (*(&bow + i) == (size_t)&fail)
+      {
+         *(&bow + i) = (size_t)&pass;
+         ++foundFunction;
+      }
+
+      // change message in main() to point to passMessage
+      if (*(&bow + i) == (size_t)failMessage)
+      {
+         *(&bow + i) = (size_t)passMessage;
+         ++foundCharPointer;
+      }
+
+      // increement i
+      i++;
+
+      // emergency exit
+      if (i>50)
+         break;
+   }
+
+   
+
+   // Making sure that we have found the specified values exactly once
+   assert(foundText == 1);
+   assert(foundNum == 1);
+   assert(foundFunction == 1);
+   assert(foundCharPointer == 1);
+
+
+   // Show call stack after changes have been made
    // header for our table. Use these setw() offsets in your table
    cout << '[' << setw(2) << 'i' << ']'
         << setw(15) << "address"
@@ -93,26 +160,16 @@ void two(long number)              // 345678
         << "-------------------+"
         << "-------------------+"
         << "-----------------+\n";
-   for (long i = 24; i >= -4; i--)   // You may need to change 24 to another number
+   for (long j = i; j >= -4; j--)
    {
-      ////////////////////////////////////////////////
-      // Insert code here to display the callstack
-
-      //
-      ////////////////////////////////////////////////
+      cout << '[' << setw(2) << j << ']'
+            << setw(15) << (&bow + j)
+            << "  0x" 
+            << setw(16) << setfill('0') << hex << *(&bow + j)
+            << setw(20) << setfill(' ') << dec << *(&bow + j)
+            << setw(18) << displayCharArray((char*) (&bow + j))
+            << endl;
    }
 
-   ////////////////////////////////////////////////
-   // Insert code here to change the variables in main()
 
-   // change text in main() to "*main**"
-
-   // change number in main() to 654321
-
-   // change pointerFunction in main() to point to pass
-
-   // change message in main() to point to passMessage
-
-   //
-   ////////////////////////////////////////////////
 }

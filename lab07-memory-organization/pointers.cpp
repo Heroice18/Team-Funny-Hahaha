@@ -1,12 +1,15 @@
-#include<iostream>
+#include <iostream>
+
+using namespace std;
 
 int main(){
    void* code = (void*)&main;
    void* stack = &code;
    void* heap = new long;
 
-   std::cout << "code:\t" << code << '\n';
-   std::cout << "stack:\t" << stack << '\n';
-   std::cout << "heap:\t" << heap << '\n';
+   cout << "code address: " << code << "\n";
+   cout << "stack address: " << stack << "\n";
+   cout << "heap address: " << heap << "\n";
+   
    return 0;
 }
