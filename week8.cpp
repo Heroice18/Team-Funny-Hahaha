@@ -1,3 +1,6 @@
+#include <iostream>
+using namespace std;
+
 /****************************************
  * ARRAY VULNERABILTY
  * 1. There must be an array and an array index variable
@@ -37,12 +40,12 @@ void arcVulnerability()
 
 void arcWorking()
 {
-   arcVunerability();
+   arcVulnerability();
 }
 
 void arcExploit()
 {
-   arcVunerability();
+   arcVulnerability();
 }
 
 class Vulnerability
@@ -52,14 +55,21 @@ class Vulnerability
 void vtableWorking()
 {
    Vulnerability test;
-   test.vunerable();
+   // test.vunerable();
 }
 
 void vtableExploit()
 {
    Vulnerability test;
-   test.vunerable();
+   // test.vunerable();
 }
+
+/****************************************
+ * STACK VULNERABILTY
+ * 1.
+ * 2.
+ * 3. There must not be bounds checking on the array index variable.
+ ****************************************/
 
 void stackVulnerability()
 {
@@ -89,18 +99,18 @@ void heapExploit()
    heapVulnerability();
 }
 
-void intVulnerability()
+void integerVulnerability()
 {
 }
 
 void integerWorking()
 {
-   intVulnerability();
+   integerVulnerability();
 }
 
 void integerExploit()
 {
-   intVulnerability();
+   integerVulnerability();
 }
 
 void ansiVulnerability()
@@ -117,7 +127,66 @@ void ansiExploit()
    ansiVulnerability();
 }
 
+// Displays a menu of vulnerabilities
+void displayVulnerabilitiesMenu()
+{
+   cout << "\nWhat kind of vulnerability would you like demonstrated?\n";
+   cout << "------------------------------------------\n";
+   cout << "\tArray Index              ---  1\n";
+   cout << "\tARC Injection            ---  2\n";
+   cout << "\tVTable Spraying          ---  3\n";
+   cout << "\tStack Smashing           ---  4\n";
+   cout << "\tHeap Spraying            ---  5\n";
+   cout << "\tInteger Overflow         ---  6\n";
+   cout << "\tANSI-Unicode Conversion  ---  7\n";
+   cout << "\tQUIT                     ---  q\n";
+   cout << "------------------------------------------\n";
+   cout << "--> ";
+}
 int main()
 {
+   bool quit = false;
+   while(!quit)
+   {
+      char selection = ' ';
+      string input = "";
+      displayVulnerabilitiesMenu();
+      cin >> input;
+
+      if (input.length() == 1)
+         selection = input[0];
+
+      switch (selection)
+      {
+      case '1':
+         arrayVulnerability();
+         break;
+      case '2':
+         arcVulnerability();
+         break;
+      case '3':
+         // vtableVulnerability();
+         break;
+      case '4':
+         stackVulnerability();
+         break;
+      case '5':
+         heapVulnerability();
+         break;
+      case '6':
+         integerVulnerability();
+         break;
+      case '7':
+         ansiVulnerability();
+         break;
+      case 'q':
+      case 'Q':
+         quit = true;
+         break;
+      default:
+         cout << "Invalid input\n";
+      }
+   }
+
    return 0;
 }
