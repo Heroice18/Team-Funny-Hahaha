@@ -10,7 +10,7 @@ using namespace std;
 void arrayVulnerability(int num)
 {
    int array[10] = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55};
-   cout << "Which Fibbonacchi number would you like to see?\n";
+   cout << "Which of the first 10 Fibbonacchi number would you like to see?\n";
    cout << "num passed is: " << num << endl;
    cout << "array[" << num - 1 << "] = " << array[num - 1] << endl;
 }
@@ -35,7 +35,7 @@ void arrayWorking()
  *************************************/
 void arrayExploit()
 {
-   arrayVulnerability(12);
+   arrayVulnerability(11);
 }
 
 void arcVulnerability()
@@ -106,10 +106,12 @@ void heapVulnerability()
    //TEST CODE!! NOT COMPLETE!!
    char * buffer1 = new char[4];
    char * buffer2 = new char[4];
+   cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
+   cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
    cout << "enter a string: ";
    cin >> buffer1;
-   cout << "buffer1 = " << buffer1 << endl;
-   cout << "buffer2 = " << buffer2 << endl;
+   cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
+   cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
    delete [] buffer2;
    cout << "buffer1 post delete= " << buffer1 << endl;
    delete [] buffer1;
