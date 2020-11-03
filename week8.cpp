@@ -52,20 +52,63 @@ void arcExploit()
    arcVulnerability();
 }
 
+/***************************************
+ * VTABLE SPRAYING/SMASHING
+ * 1. The vulnerable class must be polymorphic. 
+ * 2. The class must have a buffer as a member variable. 
+ * 3. Through some vulnerability, there must be a way for user input to overwrite parts of the V-Table. 
+ * 4. After a virtual function pointer is overwritten, the virtual function must be called.
+ **************************************/
+
 class Vulnerability
 {
+public:
+   long buffer[10];
+public:
+   long get(int i){
+      return buffer[i];
+   };
+   void set(int i, long x){
+      buffer[i] = x;
+   };
+   virtual void safe();
 };
+void Vulnerability::safe(){
+   cout << "SAFE\n";
+}
+
+void unsafe(Vulnerability* self){
+   cout << "UNSAFE\n";
+}
 
 void vtableWorking()
 {
+   cout << "--------working---------\n";
    Vulnerability test;
-   // test.vunerable();
+   test.set(5, 5000);
+   test.safe();
 }
 
 void vtableExploit()
 {
-   Vulnerability test;
-   // test.vunerable();
+   cout << "------exploit (spraying)--\n";
+   Vulnerability* test = new Vulnerability;
+   
+   test->set(-1, 0);
+   test->safe();
+   delete test;
+}
+
+void vtableSmash()
+{
+   cout << "--------exploit (smash)---------\n";
+   Vulnerability* test = new Vulnerability;
+   
+   long fakeVTable = (long)unsafe;
+   
+   test->set(-1, (long)&fakeVTable);
+   test->safe();
+   delete test;
 }
 
 /****************************************
@@ -195,18 +238,36 @@ void integerExploit()
    integerVulnerability(3333333333);
 }
 
-void ansiVulnerability()
+/**********************************************
+ * ANSI UNICODE CONVERSION
+ * 1. There must be a buffer where the basetype is greater than one. 
+ * 2. Validation of the buffer must check the size of the buffer rather than the number of elements in the buffer.
+ *********************************************/
+
+void ansiVulnerability(int i)
 {
+   int data[] = {1, 1, 2, 6, 24, 120};
+   if(i >= 0 && i < sizeof(data)){
+      cout << data[i] << endl;
+   }else{
+      cout << i << " is out of bounds\n";
+   }
 }
 
 void ansiWorking()
 {
-   ansiVulnerability();
+   cout << "--------working---------\n";
+   cout << "Input of 3\n";
+   ansiVulnerability(3);
+   cout << "Input of 30\n";
+   ansiVulnerability(30);
 }
 
 void ansiExploit()
 {
-   ansiVulnerability();
+   cout << "--------exploit---------\n";
+   cout << "Input of 8\n";
+   ansiVulnerability(8);
 }
 
 // Displays a menu of vulnerabilities
@@ -248,7 +309,9 @@ int main()
          arcVulnerability();
          break;
       case '3':
-         // vtableVulnerability();
+         vtableWorking();
+         vtableSmash();
+         vtableExploit();
          break;
       case '4':
          stackVulnerability();
@@ -261,7 +324,8 @@ int main()
          integerExploit();
          break;
       case '7':
-         ansiVulnerability();
+         ansiWorking();
+         ansiExploit();
          break;
       case 'q':
       case 'Q':
