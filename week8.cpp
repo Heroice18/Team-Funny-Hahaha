@@ -111,10 +111,6 @@ void Vulnerability::safe(){
    cout << "SAFE\n";
 }
 
-void unsafe(Vulnerability* self){
-   cout << "UNSAFE\n";
-}
-
 void vtableWorking()
 {
    cout << "--------working---------\n";
@@ -138,7 +134,7 @@ void vtableSmash()
    cout << "----exploit (smash)-----\n";
    Vulnerability* test = new Vulnerability;
    
-   long fakeVTable = (long)unsafe; // A fake V-Table
+   long fakeVTable = (long)dangerous; // A fake V-Table
    
    test->set(-1, (long)&fakeVTable); // overwrites the V-Table pointer with a fake
    test->safe();
