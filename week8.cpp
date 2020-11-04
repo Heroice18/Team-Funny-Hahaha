@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 using namespace std;
 
 /****************************************
@@ -25,31 +26,64 @@ void arrayWorking()
    arrayVulnerability(5);
 }
 
-/**************************************
- * ARRAY EXPLOIT
- * 1. The attacker provides an array index value outside the expected range
- * 2. The attacker must be able to provide input or redirect
- *    existing input into the array at the index he provided
- * 3. The injected value must alter program state in a way
- *    that is desirable to the attacker
- *************************************/
 void arrayExploit()
 {
    arrayVulnerability(11);
 }
 
-void arcVulnerability()
+void safe()
 {
+   cout << "SAFE\n";
 }
 
+void dangerous()
+{
+   cout << "Dangerous\n";
+}
+
+/**************************************
+ * ARC VULNERABILITY
+ * 1. There must be a function pointer used in the code
+ * 2. Through some vulnerability there must be some way for user input to overwrite the function pointer.
+ *    This typically happens through a stack buffer vulnerability.
+ * 3. After the memory is overwriten the function pointer must be dereferenced
+ *************************************/
+void arcVulnerability(long input[], int numElements)
+{
+   long buffer[4];
+   void (* pointerFunction)() = safe;
+   for (int i = 0; i < numElements; ++i) 
+   {
+      buffer[i] = input[i];
+   }
+   pointerFunction();
+}
+
+ /**************************************
+ * ARC VULNERABILITY
+ * Call arrayVulnerability() in a way that does
+ * not yield unexpected behavior
+ *************************************/ 
 void arcWorking()
 {
-   arcVulnerability();
+   cout << "-------ARC WORKING------\n";
+   long buffer[4] = {1,2,3,4};
+   arcVulnerability(buffer, 4);
 }
 
+/**************************************
+ * ARC EXPLOIT
+ * 1. The attacker provides an array with 5 elements the 5th being
+ *    the address of dangerous.
+ * 2. The buffer in arcVulnerability() only holds 4 elements so the 5th
+ *    overflows into the pointer function rewriting the address
+ * 3. When the pointer function is called later the pointer function is called
+ *************************************/
 void arcExploit()
 {
-   arcVulnerability();
+   cout << "-------ARC EXPLOIT------\n";
+   long largeBuffer[5] = {1,2,3,4, (long) &dangerous};
+   arcVulnerability(largeBuffer, 5);
 }
 
 /***************************************
@@ -113,23 +147,77 @@ void vtableSmash()
 
 /****************************************
  * STACK VULNERABILTY
- * 1.
- * 2.
- * 3. There must not be bounds checking on the array index variable.
+ * 1. There must be a buffer such as an array on the stack.
+ * 2. The buffer must be reachable from an external input.
+ * 3. The mechanism to fill the buffer from the external.
+ *    input must not check for the buffer size.
+ * 4. The buffer must be overrun (extend beyond the 
+ *    intended limits for the array).
  ****************************************/
-
-void stackVulnerability()
+string displayCharArray(const char * p)
 {
+   string output;
+   for (int i = 0; i < sizeof(size_t); i++)
+       output += string(" ") + (p[i] >= ' ' && p[i] <= 'z' ? p[i] : '.');
+   return output;
 }
 
+void stackVulnerability(long grades[], int numElements)
+{
+   long stackPoint = 0;
+   long sortedGrades[4];
+   for (int i = 0; i < numElements; ++i) 
+   {
+      sortedGrades[i] = grades[i];
+   }
+
+   // Show call stack after changes have been made
+   // header for our table. Use these setw() offsets in your table
+   cout << '[' << setw(2) << 'i' << ']'
+        << setw(15) << "address"
+        << setw(20) << "hexadecimal"
+        << setw(20) << "decimal"
+        << setw(18) << "characters"
+        << endl;
+   cout << "----+"
+        << "---------------+"
+        << "-------------------+"
+        << "-------------------+"
+        << "-----------------+\n";
+   for (long j = 20; j >= -4; j--)
+   {
+      cout << '[' << setw(2) << j << ']'
+            << setw(15) << (&stackPoint + j)
+            << "  0x" 
+            << setw(16) << setfill('0') << hex << *(&stackPoint + j)
+            << setw(20) << setfill(' ') << *(&stackPoint + j)
+            << setw(18) << displayCharArray((char*) (&stackPoint + j))
+            << endl;
+   }
+}
+
+
+/**************************************
+ * STACK WORKING
+ * Call arrayVulnerability() in a way that does
+ * not yield unexpected behavior
+ *************************************/
 void stackWorking()
 {
-   stackVulnerability();
+   cout << "------STACK WORKING------\n";
+   long grades[4] = {100,95,70,100};
+   stackVulnerability(grades, 4);
 }
 
+/**************************************
+ * STACK EXPLOIT
+ * 1. 
+ *************************************/
 void stackExploit()
 {
-   stackVulnerability();
+   cout << "------STACK EXPLOIT------\n";
+   long grades[5] = {65,70,0,50, (long) &dangerous};
+   stackVulnerability(grades, 5);
 }
 
 /* ***************************************************
@@ -308,7 +396,8 @@ int main()
          arrayExploit();
          break;
       case '2':
-         arcVulnerability();
+         arcWorking();
+         arcExploit();
          break;
       case '3':
          vtableWorking();
@@ -316,7 +405,8 @@ int main()
          vtableExploit();
          break;
       case '4':
-         stackVulnerability();
+         stackWorking();
+         stackExploit();
          break;
       case '5':
          heapVulnerability();
