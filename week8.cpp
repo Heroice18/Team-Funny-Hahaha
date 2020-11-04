@@ -125,22 +125,22 @@ void vtableWorking()
 
 void vtableExploit()
 {
-   cout << "------exploit (spraying)--\n";
+   cout << "----exploit (spray)-----\n";
    Vulnerability* test = new Vulnerability;
    
-   test->set(-1, 0);
+   test->set(-1, 0); // overwrites the V-Table pointer with a NULL
    test->safe();
    delete test;
 }
 
 void vtableSmash()
 {
-   cout << "--------exploit (smash)---------\n";
+   cout << "----exploit (smash)-----\n";
    Vulnerability* test = new Vulnerability;
    
-   long fakeVTable = (long)unsafe;
+   long fakeVTable = (long)unsafe; // A fake V-Table
    
-   test->set(-1, (long)&fakeVTable);
+   test->set(-1, (long)&fakeVTable); // overwrites the V-Table pointer with a fake
    test->safe();
    delete test;
 }
