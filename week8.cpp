@@ -10,9 +10,12 @@ using namespace std;
  ****************************************/
 void arrayVulnerability(int num)
 {
+   //The array has a size of 10
    int array[10] = {1, 1, 2, 3, 5, 8, 13, 21, 34, 55};
+   // Pretend to ask the user to give a sense of realism
    cout << "Which of the first 10 Fibbonacchi number would you like to see?\n";
    cout << "num passed is: " << num << endl;
+   // Subtract one from the number because arrays start at 0
    cout << "array[" << num - 1 << "] = " << array[num - 1] << endl;
 }
 
@@ -23,11 +26,24 @@ void arrayVulnerability(int num)
  *************************************/
 void arrayWorking()
 {
+   //index 4 is within the bounds of the array, normal behavior expected
    arrayVulnerability(5);
 }
 
+/* ***************************************
+ * Array Exploit
+ * In order for an array index exploit to happen, the following
+ * must occur:
+ * 1) There must be an array and an array index variable
+ * 2) The array index variable must be reachable through
+ *    external input
+ * 3) There must not be bounds checking on the array index
+ *    variable
+ * ***************************************/
 void arrayExploit()
 {
+   //index 10 is outside the bounds of the array
+   // but the lack of check makes this an exploit
    arrayVulnerability(11);
 }
 
@@ -293,14 +309,18 @@ void heapExploit()
  *  3) At least one of the numbers used to compute the sentinel must
  *     be reachable through external input. This sentinel is a variable
  *     used to make the security decision from the first requirement.
+ * In this function, the number passed is of size_t for display
+ * purposes. THe comparison is done by casting the number to an int.
  * ******************************************/
 void intVulnerability(size_t numDigits)
 {
+   //Simulate an actual program rather than something hardcoded
    cout << "Welcome to the HighScore storer!\n";
    cout << "This program will store your high score as a char array\n";
    cout << "How many digits are in your high score? (max = 10)\n";
+   //To show that excessive large numbers will overflow
    cout << "You entered " << numDigits << " digits.\n";
-   //The casting to int creates the vulnerability
+   //The casting to int creates the vulnerability, a size_t can hold larger numbers
    if ((int)numDigits < 10)
    {
       cout << "Test Passed! Thanks for your help!\n";
@@ -310,8 +330,8 @@ void intVulnerability(size_t numDigits)
       cout << "Test Failed! You entered too many digits.\n";
    }
 
-   cout << endl; //For extra spacing
-   
+   //For extra spacing
+   cout << endl;    
 }
 
 /* ********************************************
@@ -321,7 +341,9 @@ void intVulnerability(size_t numDigits)
  * ********************************************/
 void integerWorking()
 {
+   //5 < 10, works as expected
    intVulnerability(5);
+   // 12 > 10, reject as expected
    intVulnerability(12);
 }
 
@@ -335,7 +357,8 @@ void integerWorking()
  * *******************************************/
 void integerExploit()
 {
-   //This number will overflow an integer and appear negative
+   //This number will overflow an integer and pass the check
+   // even though it shouldn't
    intVulnerability(3333333333);
 }
 
