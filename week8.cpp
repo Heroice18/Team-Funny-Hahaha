@@ -228,19 +228,34 @@ void stackExploit()
  *  5) The first buffer must be overrun (extended beyond the
  *     intended limits of the array).
  * **************************************************/
-void heapVulnerability()
+void heapVulnerability(bool exploit)
 {
    //TEST CODE!! NOT COMPLETE!!
+   // initiating new buffers
    char * buffer1 = new char[4];
    char * buffer2 = new char[4];
-   cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
-   cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
-   cout << "enter a string: ";
-   cin >> buffer1;
-   cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
-   cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
+
+   // cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
+   // cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
+   
+   // condition whether to use spraying or not
+   if (exploit == true)
+   {
+      cout << "I am bad\n";
+      buffer1 = "aaaaAAAAbbbbBBBBccccCCCCddddDDDDeeeeEEEEffffFFFF";
+   }
+   else
+   {
+      cout << "I am good\n";
+      buffer1 = "I am safe";
+   }
+   
+   // cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
+   // cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
+   
+   // deleting buffers 2 then 1
    delete [] buffer2;
-   cout << "buffer1 post delete= " << buffer1 << endl;
+   // cout << "buffer1 post delete= " << buffer1 << endl;
    delete [] buffer1;
 }
 
@@ -251,7 +266,7 @@ void heapVulnerability()
  * ***************************************************/
 void heapWorking()
 {
-   heapVulnerability();
+   heapVulnerability(false);
 }
 
 /* **************************************************
@@ -267,7 +282,7 @@ void heapWorking()
  * *************************************************/
 void heapExploit()
 {
-   heapVulnerability();
+   heapVulnerability(true);
 }
 
 /* *******************************************
@@ -405,7 +420,8 @@ int main()
          stackExploit();
          break;
       case '5':
-         heapVulnerability();
+         heapWorking();
+         heapExploit();
          break;
       case '6':
          integerWorking();
