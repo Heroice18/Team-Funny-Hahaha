@@ -257,11 +257,13 @@ void heapVulnerability(bool exploit)
    // condition whether to use spraying or not
    if (exploit == true)
    {
+      // cout for testing
       cout << "I am bad\n";
       buffer1 = "aaaaAAAAbbbbBBBBccccCCCCddddDDDDeeeeEEEEffffFFFF";
    }
    else
    {
+      // cout for testing
       cout << "I am good\n";
       buffer1 = "I am safe";
    }
