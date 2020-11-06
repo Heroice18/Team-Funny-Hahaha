@@ -1,5 +1,7 @@
 #include <iostream>
 #include <iomanip>
+#include <string.h>
+#include <cassert>
 using namespace std;
 
 /****************************************
@@ -244,36 +246,20 @@ void stackExploit()
  *  5) The first buffer must be overrun (extended beyond the
  *     intended limits of the array).
  * **************************************************/
-void heapVulnerability(bool exploit)
+void heapVulnerability(char * input)
 {
-   //TEST CODE!! NOT COMPLETE!!
-   // initiating new buffers
+   // Initiating new buffers
    char * buffer1 = new char[4];
    char * buffer2 = new char[4];
 
-   // cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
-   // cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
-   
-   // condition whether to use spraying or not
-   if (exploit == true)
-   {
-      // cout for testing
-      cout << "I am bad\n";
-      buffer1 = "aaaaAAAAbbbbBBBBccccCCCCddddDDDDeeeeEEEEffffFFFF";
-   }
-   else
-   {
-      // cout for testing
-      cout << "I am good\n";
-      buffer1 = "I am safe";
-   }
-   
-   // cout << "buffer 1 address is " << &buffer1 << " and value is " << buffer1 << endl;
-   // cout << "buffer 2 address is " << &buffer2 << " and value is " << buffer2 << endl;
-   
-   // deleting buffers 2 then 1
+   // fill buffer1 from input variable
+   strcpy(buffer1, input);
+
+   cout << "\nbuffer1 = " << buffer1 << endl;
+   cout << "buffer2 = " << buffer2 << endl;
+
+   // Deleting buffers 2 then 1
    delete [] buffer2;
-   // cout << "buffer1 post delete= " << buffer1 << endl;
    delete [] buffer1;
 }
 
@@ -284,7 +270,7 @@ void heapVulnerability(bool exploit)
  * ***************************************************/
 void heapWorking()
 {
-   heapVulnerability(false);
+   heapVulnerability((char *)"Safe");
 }
 
 /* **************************************************
@@ -300,7 +286,7 @@ void heapWorking()
  * *************************************************/
 void heapExploit()
 {
-   heapVulnerability(true);
+   heapVulnerability("Pink fluffy unicorns dancing on rainbows -- 10 hour version.");
 }
 
 /* *******************************************
