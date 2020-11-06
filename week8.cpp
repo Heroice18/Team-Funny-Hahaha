@@ -252,11 +252,10 @@ void heapVulnerability(char * input)
    char * buffer1 = new char[4];
    char * buffer2 = new char[4];
 
-   // fill buffer1 from input variable
+   // fill buffer1 from input variable without bounds checking
    strcpy(buffer1, input);
 
    cout << "\nbuffer1 = " << buffer1 << endl;
-   cout << "buffer2 = " << buffer2 << endl;
 
    // Deleting buffers 2 then 1
    delete [] buffer2;
@@ -270,6 +269,7 @@ void heapVulnerability(char * input)
  * ***************************************************/
 void heapWorking()
 {
+   //Fits within the buffer size, no problems
    heapVulnerability((char *)"Safe");
 }
 
@@ -286,7 +286,8 @@ void heapWorking()
  * *************************************************/
 void heapExploit()
 {
-   heapVulnerability("Pink fluffy unicorns dancing on rainbows -- 10 hour version.");
+   //Exceeds the buffer size and causes problems
+   heapVulnerability((char *)"Pink fluffy unicorns dancing on rainbows -- 10 hour version.");
 }
 
 /* *******************************************
