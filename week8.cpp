@@ -256,7 +256,6 @@ void heapVulnerability(char * input)
    strcpy(buffer1, input);
 
    cout << "\nbuffer1 = " << buffer1 << endl;
-   cout << "buffer2 = " << buffer2 << endl;
 
    // Deleting buffers 2 then 1
    delete [] buffer2;
