@@ -176,38 +176,19 @@ string displayCharArray(const char * p)
    return output;
 }
 
-void stackVulnerability(long grades[], int numElements)
+int stackVulnerability(long input[], int numElements)
 {
-   long stackPoint = 0;
-   long sortedGrades[4];
-   for (int i = 0; i < numElements; ++i)
+   int indexOfHighestGrade = 0;
+   long grades[10];
+   for (int i = 0; i < numElements; i++)
    {
-      sortedGrades[i] = grades[i];
+      grades[i] = input[i];
+      if (grades[i] > grades[indexOfHighestGrade])
+      {
+         indexOfHighestGrade = i;
+      }
    }
-
-   // Show call stack after changes have been made
-   // header for our table. Use these setw() offsets in your table
-   cout << '[' << setw(2) << 'i' << ']'
-        << setw(15) << "address"
-        << setw(20) << "hexadecimal"
-        << setw(20) << "decimal"
-        << setw(18) << "characters"
-        << endl;
-   cout << "----+"
-        << "---------------+"
-        << "-------------------+"
-        << "-------------------+"
-        << "-----------------+\n";
-   for (long j = 20; j >= -4; j--)
-   {
-      cout << '[' << setw(2) << j << ']'
-            << setw(15) << (&stackPoint + j)
-            << "  0x"
-            << setw(16) << setfill('0') << hex << *(&stackPoint + j)
-            << setw(20) << setfill(' ') << *(&stackPoint + j)
-            << setw(18) << displayCharArray((char*) (&stackPoint + j))
-            << endl;
-   }
+   return indexOfHighestGrade;
 }
 
 
@@ -219,8 +200,10 @@ void stackVulnerability(long grades[], int numElements)
 void stackWorking()
 {
    cout << "------STACK WORKING------\n";
-   long grades[4] = {100,95,70,100};
-   stackVulnerability(grades, 4);
+   long grades[10] = {95,70,99,50,100,0,10,75,98,95};
+   int indexOfHighestGrade = stackVulnerability(grades, 10);
+   cout << "The index of the highest grade is "
+        << indexOfHighestGrade << endl;
 }
 
 /**************************************
@@ -230,8 +213,8 @@ void stackWorking()
 void stackExploit()
 {
    cout << "------STACK EXPLOIT------\n";
-   long grades[5] = {65,70,0,50, (long) &dangerous};
-   stackVulnerability(grades, 5);
+   long grades[14] = {12,12,12,12,12,12,12,12,12,12,12,12,12, (long) &dangerous};
+   stackVulnerability(grades, 14);
 }
 
 /* ***************************************************
