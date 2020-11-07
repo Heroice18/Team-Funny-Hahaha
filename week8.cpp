@@ -168,20 +168,18 @@ void vtableSmash()
  * 4. The buffer must be overrun (extend beyond the
  *    intended limits for the array).
  ****************************************/
-string displayCharArray(const char * p)
-{
-   string output;
-   for (int i = 0; i < sizeof(size_t); i++)
-       output += string(" ") + (p[i] >= ' ' && p[i] <= 'z' ? p[i] : '.');
-   return output;
-}
-
 int stackVulnerability(long input[], int numElements)
 {
    int indexOfHighestGrade = 0;
+
+   // Requirement 1: buffer.
    long grades[10];
+
+   // Requirement 3: There is no check on numElements
    for (int i = 0; i < numElements; i++)
    {
+      // Requirements 2: input reaches buffer
+      // Requirements 4: when i exceeds 9 the buffer is overrun.
       grades[i] = input[i];
       if (grades[i] > grades[indexOfHighestGrade])
       {
@@ -195,7 +193,10 @@ int stackVulnerability(long input[], int numElements)
 /**************************************
  * STACK WORKING
  * Call arrayVulnerability() in a way that does
- * not yield unexpected behavior
+ * not yield unexpected behavior.
+ * In this example the stackVulnurability's true
+ * purpose is to find the index of the highest
+ * grade in the provided buffer.
  *************************************/
 void stackWorking()
 {
@@ -208,7 +209,11 @@ void stackWorking()
 
 /**************************************
  * STACK EXPLOIT
- * 1.
+ * 1. The attacker provides an array index value outside the expected range
+ * 2. The attacker must be able to provide input or redirect existing input
+ *    into the array at the index he provided.
+ * 3. The last element of the array (the one that will overwrite the return address)
+ *    is the address of the function "dangerous".
  *************************************/
 void stackExploit()
 {
