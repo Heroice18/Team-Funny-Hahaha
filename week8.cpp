@@ -70,7 +70,7 @@ void arcVulnerability(long input[], int numElements)
 {
    long buffer[4];
    void (* pointerFunction)() = safe;
-   for (int i = 0; i < numElements; ++i) 
+   for (int i = 0; i < numElements; ++i)
    {
       buffer[i] = input[i];
    }
@@ -81,7 +81,7 @@ void arcVulnerability(long input[], int numElements)
  * ARC VULNERABILITY
  * Call arrayVulnerability() in a way that does
  * not yield unexpected behavior
- *************************************/ 
+ *************************************/
 void arcWorking()
 {
    cout << "-------ARC WORKING------\n";
@@ -106,9 +106,9 @@ void arcExploit()
 
 /***************************************
  * VTABLE SPRAYING/SMASHING
- * 1. The vulnerable class must be polymorphic. 
- * 2. The class must have a buffer as a member variable. 
- * 3. Through some vulnerability, there must be a way for user input to overwrite parts of the V-Table. 
+ * 1. The vulnerable class must be polymorphic.
+ * 2. The class must have a buffer as a member variable.
+ * 3. Through some vulnerability, there must be a way for user input to overwrite parts of the V-Table.
  * 4. After a virtual function pointer is overwritten, the virtual function must be called.
  **************************************/
 
@@ -141,7 +141,7 @@ void vtableExploit()
 {
    cout << "----exploit (spray)-----\n";
    Vulnerability* test = new Vulnerability;
-   
+
    test->set(-1, 0); // overwrites the V-Table pointer with a NULL
    test->safe();
    delete test;
@@ -151,9 +151,9 @@ void vtableSmash()
 {
    cout << "----exploit (smash)-----\n";
    Vulnerability* test = new Vulnerability;
-   
+
    long fakeVTable = (long)dangerous; // A fake V-Table
-   
+
    test->set(-1, (long)&fakeVTable); // overwrites the V-Table pointer with a fake
    test->safe();
    delete test;
@@ -165,7 +165,7 @@ void vtableSmash()
  * 2. The buffer must be reachable from an external input.
  * 3. The mechanism to fill the buffer from the external.
  *    input must not check for the buffer size.
- * 4. The buffer must be overrun (extend beyond the 
+ * 4. The buffer must be overrun (extend beyond the
  *    intended limits for the array).
  ****************************************/
 string displayCharArray(const char * p)
@@ -180,7 +180,7 @@ void stackVulnerability(long grades[], int numElements)
 {
    long stackPoint = 0;
    long sortedGrades[4];
-   for (int i = 0; i < numElements; ++i) 
+   for (int i = 0; i < numElements; ++i)
    {
       sortedGrades[i] = grades[i];
    }
@@ -202,7 +202,7 @@ void stackVulnerability(long grades[], int numElements)
    {
       cout << '[' << setw(2) << j << ']'
             << setw(15) << (&stackPoint + j)
-            << "  0x" 
+            << "  0x"
             << setw(16) << setfill('0') << hex << *(&stackPoint + j)
             << setw(20) << setfill(' ') << *(&stackPoint + j)
             << setw(18) << displayCharArray((char*) (&stackPoint + j))
@@ -225,7 +225,7 @@ void stackWorking()
 
 /**************************************
  * STACK EXPLOIT
- * 1. 
+ * 1.
  *************************************/
 void stackExploit()
 {
@@ -320,7 +320,7 @@ void intVulnerability(size_t numDigits)
    }
 
    //For extra spacing
-   cout << endl;    
+   cout << endl;
 }
 
 /* ********************************************
@@ -353,7 +353,7 @@ void integerExploit()
 
 /**********************************************
  * ANSI UNICODE CONVERSION
- * 1. There must be a buffer where the basetype is greater than one. 
+ * 1. There must be a buffer where the basetype is greater than one.
  * 2. Validation of the buffer must check the size of the buffer rather than the number of elements in the buffer.
  *********************************************/
 
