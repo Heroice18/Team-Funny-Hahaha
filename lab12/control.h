@@ -20,3 +20,10 @@ bool securityConditionRead(Control assetControl, /* asset control */ Control sub
 {
 return subjectControl >= assetControl;
 }
+
+// was just copy pasted in. Needs to be moved!
+bool securityConditionWrite(Control assetControl, /* asset control */ Control subjectControl /* request control*/)
+{
+return subjectControl <= assetControl; // opposite of the Read!
+}
+
