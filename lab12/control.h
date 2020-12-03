@@ -15,4 +15,8 @@ enum CONTROL
     UNCLASSIFIED, PUBLIC, CONFIDENTIAL, SECRET, TOP_SECRET
 };
 
-
+// was just copy pasted in. Needs to be moved!
+bool securityConditionRead(Control assetControl, /* asset control */ Control subjectControl /* request control*/)
+{
+return subjectControl >= assetControl;
+}
