@@ -34,12 +34,13 @@ void Messages::display() const
  * MESSAGES :: SHOW
  * show a single message
  **********************************************/
-void Messages::show(int id) const
+void Messages::show(int id, Control subjectControl) const
 {
    for (list <Message> :: const_iterator it = messages.begin();
         it != messages.end();
         ++it)
-      if (it->getID() == id)
+      if (it->getID() == id &&
+          securityConditionRead(it->getControl(), subjectControl))
          it->displayText();
 }
 
@@ -47,12 +48,13 @@ void Messages::show(int id) const
  * MESSAGES :: UPDATE
  * update one single message
  ***********************************************/
-void Messages::update(int id, const string & text)
+void Messages::update(int id, const string & text, Control subjectControl)
 {
    for (list <Message> :: iterator it = messages.begin();
         it != messages.end();
         ++it)
-      if (it->getID() == id)
+      if (it->getID() == id &&
+          securityConditionWrite(it->getControl(), subjectControl))
          it->updateText(text);
 }
 
@@ -60,12 +62,12 @@ void Messages::update(int id, const string & text)
  * MESSAGES :: REMOVE
  * remove a single message
  **********************************************/
-void Messages::remove(int id)
+void Messages::remove(int id, Control subjectControl)
 {
    for (list <Message> :: iterator it = messages.begin();
         it != messages.end();
         ++it)
-      if (it->getID() == id)
+      if (it->getID() == id && securityConditionWrite(it->getControl(), subjectControl))
          it->clear();
 }
 
@@ -75,10 +77,13 @@ void Messages::remove(int id)
  **********************************************/
 void Messages::add(const string & text,
                    const string & author,
-                   const string & date)
+                   const string & date,
+                   const string & textControl,
+                   Control subjectControl)
 {
-   Message message(text, author, date);
-   messages.push_back(message);
+   Message message(text, author, date, textControl);
+   if (securityConditionWrite(message.getControl(), subjectControl))
+      messages.push_back(message);
 }
 
 /***********************************************
@@ -111,7 +116,7 @@ void Messages::readMessages(const char * fileName)
 
       if (!fin.fail())
       {
-         Message message(text, author, date);
+         Message message(text, author, date, textControl);
          messages.push_back(message);
       }
    }

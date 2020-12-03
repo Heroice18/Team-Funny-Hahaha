@@ -30,13 +30,24 @@ Message ::  Message()
  **************************************************/
 Message::Message(const string & text,
                  const string & author,
-                 const string & date)
+                 const string & date,
+                 const string & textControl)
 {
    this->text = text;
    this->author = author;
    this->date = date;
    this->id = idNext++;
    empty = false;
+
+   if (textControl == "Public")
+      this->control = PUBLIC;
+   else if (textControl == "Privileged")
+      this->control = PRIVILEGED;
+   else if (textControl == "Confidential")
+      this->control = CONFIDENTIAL;
+   else if (textControl == "Secret")
+      this->control = SECRET;
+
 }
 
 /**************************************************

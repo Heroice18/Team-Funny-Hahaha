@@ -28,19 +28,22 @@ public:
    void display() const;
 
    // show a single message
-   void show(int id) const;
+   void show(int id, Control subjectControl) const;
 
    // update one single message
    void update(int id,
-               const std::string & text);
+               const std::string & text,
+               Control subjectControl);
 
    // remove a single message
-   void remove(int id);
+   void remove(int id, Control subjectControl);
 
    // add a new message
    void add(const std::string & text,
             const std::string & author,
-            const std::string & date);
+            const std::string & date,
+            const std::string & textControl,
+            Control subjectControl);
 
 private:
    // the list of messages

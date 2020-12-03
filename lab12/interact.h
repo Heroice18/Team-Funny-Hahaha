@@ -21,6 +21,7 @@ struct User
 {
    const char *name;
    const char *password;
+   const Control control;
 };
 
 /****************************************************
@@ -60,11 +61,14 @@ private:
    int promptForId(const char * verb) const;
 
    // authenticate the user;
-   void authenticate(const std::string & userName,
+   Control authenticate(const std::string & userName,
                      const std::string & password) const;
 
    // find the ID of a given user
    int idFromUser(const std::string & userName) const;
+
+   Control control;
+
 };
 
 // display the set of users in the system

@@ -11,22 +11,12 @@
 #pragma once
 
 // you may need to put something here...
-enum CONTROL
+enum Control
 {
-    UNCLASSIFIED, PUBLIC, CONFIDENTIAL, SECRET, TOP_SECRET
+   PUBLIC, CONFIDENTIAL, PRIVILEGED, SECRET
 };
 
-// was just copy pasted in. Needs to be moved!
-bool securityConditionRead(Control assetControl, /* asset control */ Control subjectControl /* request control*/)
-{
-return subjectControl >= assetControl;
-}
 
-// was just copy pasted in. Needs to be moved!
-bool securityConditionWrite(Control assetControl, /* asset control */ Control subjectControl /* request control*/)
-{
-return subjectControl <= assetControl; // opposite of the Read!
-}
+bool securityConditionRead(Control assetControl, Control subjectControl);
 
-// was just copy pasted in. Needs to be moved!
-Control authenticate(string username); // usually need a password also!
+bool securityConditionWrite(Control assetControl, Control subjectControl);
