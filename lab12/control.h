@@ -2,7 +2,8 @@
  * COMPONENT:
  *    CONTROL
  * Author:
- *    Br. Helfrich, <your name here if you made a change>
+ *    Br. Helfrich, Caleb Baird, Thomas Peck, Jonathan Hald, and Ethan
+ *    Nelson.
  * Summary:
  *    This class stores the notion of Bell-LaPadula
  ************************************************************************/
@@ -27,3 +28,5 @@ bool securityConditionWrite(Control assetControl, /* asset control */ Control su
 return subjectControl <= assetControl; // opposite of the Read!
 }
 
+// was just copy pasted in. Needs to be moved!
+Control authenticate(string username); // usually need a password also!
