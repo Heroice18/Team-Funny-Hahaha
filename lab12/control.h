@@ -10,3 +10,9 @@
 #pragma once
 
 // you may need to put something here...
+enum CONTROL
+{
+    UNCLASSIFIED, PUBLIC, CONFIDENTIAL, SECRET, TOP_SECRET
+};
+
+
