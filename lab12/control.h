@@ -10,7 +10,7 @@
 
 #pragma once
 
-// you may need to put something here...
+
 enum Control
 {
    PUBLIC, CONFIDENTIAL, PRIVILEGED, SECRET

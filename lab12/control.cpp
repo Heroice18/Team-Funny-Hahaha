@@ -9,5 +9,5 @@ bool securityConditionRead(Control assetControl, Control subjectControl)
 
 bool securityConditionWrite(Control assetControl, Control subjectControl)
 {
-   return subjectControl <= assetControl; // opposite of the Read!
+   return subjectControl <= assetControl; 
 }
