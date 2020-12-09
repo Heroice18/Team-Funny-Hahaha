@@ -36,6 +36,7 @@ public:
 
       // The encrypt pseudocode
       str =  "Encryption pseudocode\n";
+      str += "for every letter in message to be encoded\n";
       str += "for rows in grid\n";
       str += "for columns in grid\n";
       str += "if letter to be encrypted = grid letter\n";
