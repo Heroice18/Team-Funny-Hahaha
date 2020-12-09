@@ -12,8 +12,8 @@
 class Cipher05 : public Cipher
 {
 public:
-   virtual std::string getPseudoAuth()  { return "pseudocode author"; }
-   virtual std::string getCipherName()  { return "cipher name"; }
+   virtual std::string getPseudoAuth()  { return "Caleb Baird"; }
+   virtual std::string getCipherName()  { return "Beaufort Cipher"; }
    virtual std::string getEncryptAuth() { return "encrypt author"; }
    virtual std::string getDecryptAuth() { return "decrypt author"; }
 
@@ -23,9 +23,14 @@ public:
     ***********************************************************/
    virtual std::string getCipherCitation()
    {
-      return std::string("citation");
+      std::string s;
+      s += "cryto-it.net (2020), ";
+      s += "Beaufort Cipher - POLYALPHABETIC SUBSTITUTION CIPHER, \n";
+      s += "retrieved: ";
+      s += "http://www.crypto-it.net/eng/simple/beaufort-cipher.html";
+      return s;
    }
-   
+
    /**********************************************************
     * GET PSEUDOCODE
     * Returns the pseudocode as a string to be used by the caller.
@@ -34,12 +39,56 @@ public:
    {
       std::string str;
 
-      // TODO: please format your pseudocode
       // The encrypt pseudocode
-      str =  "insert the encryption pseudocode\n";
+      str =  "";
+      str += "-------------------------------------------------------\n";
+      str += " Beaufort Cipher -- HINT this is a reciprocal cipher\n";
+      str += "       so encrypt and decrypt functions are the same\n";
+      str += "-------------------------------------------------------\n";
+      str += " FUNCTION encypt(key, plainText)\n";
+      str += "    cipherText <- \"\"\n";
+      str += "    pos <- 0\n";
+      str += "    plainTextLengh <- # letters in plainText\n";
+      str += "\n";
+      str += "    FOR pos < plainTextLength DO\n";
+      str += "       letterRow <- 'A'\n";
+      str += "       plainTextLetter <- plainText[pos]\n";
+      str += "\n";
+      str += "       WHILE plainTextLetter != key[pos % len(key)] DO\n";
+      str += "          plainTextLetter <- (plainTextLetter - 'A' + 1)";
+      str += " MOD 26 + 'A'\n";
+      str += "          letterRow <- (letterRow - 'A' + 1) MOD 26 + 'A'\n";
+      str += "       END WHILE\n";
+      str += "\n";
+      str += "       cipherText += letterRow\n";
+      str += "       pos += 1\n";
+      str += "    END FOR\n";
+      str += "\n";
+      str += "    RETURN cipherText\n";
+      str += " END FUNCTION\n\n";
 
       // The decrypt pseudocode
-      str += "insert the decryption pseudocode\n";
+      str += " FUNCTION encypt(key, cipherText)\n";
+      str += "    plainText <- \"\"\n";
+      str += "    pos <- 0\n";
+      str += "    cipherTextLengh <- # letters in cipherText\n";
+      str += "\n";
+      str += "    FOR pos < cipherTextLength DO\n";
+      str += "       letterRow <- 'A'\n";
+      str += "       cipherTextLetter <- cipherText[pos]\n";
+      str += "\n";
+      str += "       WHILE cipherTextLetter != key[pos % len(key)] DO\n";
+      str += "          cipherTextLetter <- (cipherTextLetter - 'A' + 1)";
+      str += " MOD 26 + 'A'\n";
+      str += "          letterRow <- (letterRow - 'A' + 1) MOD 26 + 'A'\n";
+      str += "       END WHILE\n";
+      str += "\n";
+      str += "       plainText += letterRow\n";
+      str += "       pos += 1\n";
+      str += "    END FOR\n";
+      str += "\n";
+      str += "    RETURN plainText\n";
+      str += " END FUNCTION\n";
 
       return str;
    }
