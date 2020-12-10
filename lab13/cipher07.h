@@ -14,8 +14,8 @@ class Cipher07 : public Cipher
 public:
    virtual std::string getPseudoAuth()  { return "Ethan Nelson"; }
    virtual std::string getCipherName()  { return "(Checkerboard) Polybius Square"; }
-   virtual std::string getEncryptAuth() { return "Ethan Nelson"; }
-   virtual std::string getDecryptAuth() { return "Ethan Nelson"; }
+   virtual std::string getEncryptAuth() { return ""; }
+   virtual std::string getDecryptAuth() { return ""; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -36,18 +36,19 @@ public:
 
       // The encrypt pseudocode
       str =  "Encryption pseudocode\n";
-      str += "for every letter in message to be encoded\n";
-      str += "for rows in grid\n";
-      str += "for columns in grid\n";
-      str += "if letter to be encrypted = grid letter\n";
+      str += "string plaintext\n";
+      str += "the key is a 5x5 or a 5x6 array\n";
+      str += "for every letter in plaintext\n";
+      str += "for rows in key\n";
+      str += "for columns in key\n";
+      str += "if letter in the plaintext = grid letter\n";
       str += "encription += row, col\n";
-
-
 
       // The decrypt pseudocode
       str += "Decryption pseudocode\n";
-      str += "for every 2 numbers in encoded message\n";
-      str += "decoded message += grid[row][col]\n";
+      str += "for every 2 numbers in cipher message\n";
+      str += "every word is space seperated so if the first character is a blank space a space will be used and the count will increase by 1\n";
+      str += "decoded message += key[row+1][col+1]\n";
       return str;
    }
 
