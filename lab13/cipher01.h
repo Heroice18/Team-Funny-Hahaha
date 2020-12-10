@@ -25,9 +25,9 @@ public:
    virtual std::string getCipherCitation()
    {
       std::string sources;
-      sources += "How much do you know about the Vigenère cipher?\n";
+      sources += "How much do you know about the Vigenere cipher?\n";
       sources += "\t https://community.ibm.com/community/user/ibmz-and-linuxone/blogs/subhasish-sarkar1/2020/07/17/how-much-do-you-know-about-the-vigenere-cipher \n";
-      sources += "Cryptography, Information Theory, and Error-Correction";
+      sources += "Cryptography, Information Theory, and Error-Correction\n";
       sources += "\t https://books.google.com/books?id=fd2LtVgFzoMC&pg=PA21#v=onepage&q&f=false"; 
       return sources;
    }
@@ -42,7 +42,7 @@ public:
 
 
        // The helper function
-      codeP += "createKey(plaintext, key)\n";
+      codeP = "createKey(plaintext, key)\n";
       // Get the size of the plaintext so we can make the size of the key match
       codeP += "  sizeV <- plaintext.size() \n";
       //For loop going through and editing the key
@@ -57,7 +57,7 @@ public:
       codeP += "\n";
       
       // The encrypt pseudocode
-      codeP =  "encryptV(plaintext, key)\n";
+      codeP +=  "encryptV(plaintext, key)\n";
       codeP += "  encryptKey <- createKey(plaintext, key)\n";
       codeP += "  encryptedText <- empty()\n";
       codeP += "  FOR i is all values in plaintext\n";
