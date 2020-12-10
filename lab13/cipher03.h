@@ -75,7 +75,7 @@ public:
    {
       std::string plainText = cipherText;
       // TODO - Add your code here
-      
+      return plainText;
    }
 };
 
