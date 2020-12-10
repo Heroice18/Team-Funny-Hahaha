@@ -12,8 +12,8 @@
 class Cipher06 : public Cipher
 {
 public:
-   virtual std::string getPseudoAuth()  { return "pseudocode author"; }
-   virtual std::string getCipherName()  { return "cipher name"; }
+   virtual std::string getPseudoAuth()  { return "Thomas Peck"; }
+   virtual std::string getCipherName()  { return "Columnar Transposition"; }
    virtual std::string getEncryptAuth() { return "encrypt author"; }
    virtual std::string getDecryptAuth() { return "Tyler Peart"; }
 
@@ -23,7 +23,8 @@ public:
     ***********************************************************/
    virtual std::string getCipherCitation()
    {
-      return std::string("citation");
+      std::string citation;
+      citation += "http://www.crypto-it.net/eng/simple/columnar-transposition.html";
    }
    
    /**********************************************************
@@ -34,12 +35,44 @@ public:
    {
       std::string str;
 
-      // TODO: please format your pseudocode
-      // The encrypt pseudocode
-      str =  "insert the encryption pseudocode\n";
+      str =  "encrypt(plaintext, key)\n";
+      str += "  vector<string> matrix\n";
+      str += "  for 0 <= i < key.length\n";
+      str += "    matrix[i] = \"\"\n";
+      str += "  for 0 <= i < plaintext.length\n";
+      str += "    matrix[i % key.length] += plaintext[i]\n";
+      str += "  numkey = numbersFromKey(key)\n";
+      str += "  result = \"\"\n";
+      str += "  for 0 <= i < numkey.length\n";
+      str += "    result += matrix[i]\n";
+      str += "  return result\n\n";
 
-      // The decrypt pseudocode
-      str += "insert the decryption pseudocode\n";
+      str =  "numbersFromKey(key)\n";
+      str += "  vector<pair<char, int>> pairs\n";
+      str += "  for 0 <= i < key.length\n"; 
+      str += "    pairs[i] = pair(key[i], i)\n";
+      str += "  stable_sort(pairs.begin, pairs.end, [](a,b){return a.get<0>() < b.get<0>();})\n";
+      str += "  vector<int> results\n";
+      str += "  for 0 < i <= pairs.length\n";
+      str += "    result.push_back(pairs[i].get<1>())\n";
+      str += "  return result\n\n";
+
+      str =  "decrypt(ciphertext, key)\n";
+      str += "  numkey = numbersFromKey(key)\n";
+      str += "  vector<string> matrix\n";
+      str += "  columnSize = ciphertext.length / numkey.length\n";
+      str += "  for 0 <= i < numkey.length\n";
+      str += "    j = numkey[i]]\n";
+      str += "    if(j < ciphertext.length % numkey.length)\n";
+      str += "      matrix[j] = ciphertext[0...columnSize]\n";
+      str += "      ciphertext = ciphertext[columnSize...]\n";
+      str += "    else\n";
+      str += "      matrix[j] = ciphertext[0...columnSize + 1]\n";
+      str += "      ciphertext = ciphertext[columnSize + 1...]\n";
+      str += "  result = \"\"\n";
+      str += "  for 0 <= i < ciphertext.length\n";
+      str += "    result += matrix[i % key.length][i / key.length]\n";
+      str += "  return result\n\n";
 
       return str;
    }
