@@ -40,34 +40,8 @@ public:
    {
       std::string codeP;
 
-      
-      // The encrypt pseudocode
-      codeP =  "encryptV(plaintext, key)\n";
-      codeP += "  encryptKey <- createKey(plaintext, key)\n";
-      codeP += "  encryptedText <- empty()\n";
-      codeP += "  FOR j is all values in plaintext\n";
-      //To find the location in the alphabet that the key is at
-      codeP += "     C = (plaintext[j] + encryptKey[j] +26) %26 \n";
-      //Convert int to ASCII
-      codeP += "     C = C + 'A'\n";
-      codeP += "     encryptedText += C\n";
-      codeP += "  RETURN encryptedText\n";
-      codeP += "\n";
-      
-      // The decrypt pseudocode
-      codeP += "decryptV(plaintext, key)\n";
-      codeP += "  decryptKey <- createKey(plaintext, key)\n";
-      codeP += "  decryptedText <- empty()\n";
-      codeP += "  FOR k is all values in plaintext\n";
-      //To find the location in the alphabet that the key is at
-      codeP += "     B = (plaintext[k] - decryptKey[k] +26) %26 \n";
-      //Convert int to ASCII
-      codeP += "     B = B + 'A'\n";
-      codeP += "     decryptedText += C\n";
-      codeP += "  RETURN decryptedText\n";
-      codeP += "\n";
 
-      // The helper function
+       // The helper function
       codeP += "createKey(plaintext, key)\n";
       // Get the size of the plaintext so we can make the size of the key match
       codeP += "  sizeV <- plaintext.size() \n";
@@ -81,6 +55,34 @@ public:
       codeP += "        RETURN key\n";
       codeP += "     key += key at i\n";
       codeP += "\n";
+      
+      // The encrypt pseudocode
+      codeP =  "encryptV(plaintext, key)\n";
+      codeP += "  encryptKey <- createKey(plaintext, key)\n";
+      codeP += "  encryptedText <- empty()\n";
+      codeP += "  FOR i is all values in plaintext\n";
+      //To find the location in the alphabet that the key is at
+      codeP += "     encryptIndex = (plaintext[i] + encryptKey[i] +26) %26 \n";
+      //Convert int to ASCII
+      codeP += "     encryptIndex = encryptIndex + 'A'\n";
+      codeP += "     encryptedText += encryptIndex\n";
+      codeP += "  RETURN encryptedText\n";
+      codeP += "\n";
+      
+      // The decrypt pseudocode
+      codeP += "decryptV(plaintext, key)\n";
+      codeP += "  decryptKey <- createKey(plaintext, key)\n";
+      codeP += "  decryptedText <- empty()\n";
+      codeP += "  FOR i is all values in plaintext\n";
+      //To find the location in the alphabet that the key is at
+      codeP += "     decryptIndex = (plaintext[i] - decryptKey[i] +26) %26 \n";
+      //Convert int to ASCII
+      codeP += "     decryptIndex = decryptIndex + 'A'\n";
+      codeP += "     decryptedText += decryptIndex\n";
+      codeP += "  RETURN decryptedText\n";
+      codeP += "\n";
+
+     
 
 
       
