@@ -55,9 +55,9 @@ public:
       str+="   RETURN out\n";
 
       str+="ROTL(a, b)\n";
-      str+="    x <- a LEFTSHIFT b\n"
-      str+="    y <- a RIGHTSHIFT (32 - b)\n"
-      str+="    RETURN x BIT-OR y\n"
+      str+="    x <- a LEFTSHIFT b\n";
+      str+="    y <- a RIGHTSHIFT (32 - b)\n";
+      str+="    RETURN x BIT-OR y\n";
 
       str+="QR(a, b, c, d)\n";
       str+="   b BIT-AND ROTL(a + d, 7)\n";
@@ -65,33 +65,33 @@ public:
       str+="   d BIT-AND ROTL(c + b, 13)\n";
       str+="   a BIT-AND ROTL(d + c, 18)\n";
 
-      str+="salsa20(out, in)\n"
-      str+="   LOOP for i FROM 0 to 16\n"
-      str+="      x[i] <- in[i]\n"
-      str+="   LOOP for 10 times\n"
-      str+="      QR(x[0], x[4], x[8], x[12])\n"
-      str+="      QR(x[5], x[9], x[13], x[1])\n"
-      str+="      QR(x[10], x[14], x[2], x[6])\n"
-      str+="      QR(x[15], x[3], x[7], x[11])\n"
+      str+="salsa20(out, in)\n";
+      str+="   LOOP for i FROM 0 to 16\n";
+      str+="      x[i] <- in[i]\n";
+      str+="   LOOP for 10 times\n";
+      str+="      QR(x[0], x[4], x[8], x[12])\n";
+      str+="      QR(x[5], x[9], x[13], x[1])\n";
+      str+="      QR(x[10], x[14], x[2], x[6])\n";
+      str+="      QR(x[15], x[3], x[7], x[11])\n";
 
-      str+="      QR(x[0], x[1], x[2], x[3])\n"
-      str+="      QR(x[5], x[6], x[7], x[4])\n"
-      str+="      QR(x[10], x[11], x[8], x[9])\n"
-      str+="      QR(x[15], x[12], x[13], x[14])\n"
-      str+="   LOOP for i FROM 0 to 16\n"
-      str+="      out[1] <- x[i] + in[i]\n"
+      str+="      QR(x[0], x[1], x[2], x[3])\n";
+      str+="      QR(x[5], x[6], x[7], x[4])\n";
+      str+="      QR(x[10], x[11], x[8], x[9])\n";
+      str+="      QR(x[15], x[12], x[13], x[14])\n";
+      str+="   LOOP for i FROM 0 to 16\n";
+      str+="      out[1] <- x[i] + in[i]\n";
 
       // The encrypt pseudocode
-      str+="encrypt(plaintext, key, nonce)\n"
-      str+="    in <- generateInitialState(key, nonce, 0)\n"
-      str+="    salsa20(out, in)\n"
-      str+="    RETURN plaintext BIT-XOR out\n"
+      str+="encrypt(plaintext, key, nonce)\n";
+      str+="    in <- generateInitialState(key, nonce, 0)\n";
+      str+="    salsa20(out, in)\n";
+      str+="    RETURN plaintext BIT-XOR out\n";
 
       // The decrypt pseudocode
-      str+="decrypt(ciphertext, key, nonce, pos)\n"
-      str+="    in <- generateInitialState(key, nonce, pos)\n"
-      str+="    salsa20(out, in)\n"
-      str+="    RETURN ciphertext BIT-XOR out\n"
+      str+="decrypt(ciphertext, key, nonce, pos)\n";
+      str+="    in <- generateInitialState(key, nonce, pos)\n";
+      str+="    salsa20(out, in)\n";
+      str+="    RETURN ciphertext BIT-XOR out\n";
 
       return str;
    }
