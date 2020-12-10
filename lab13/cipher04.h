@@ -44,19 +44,19 @@ public:
 
       //helper function
       str ="generateInitialState(key, nonce, pos)\n";
-      //Each index of out is a 32 bit word
-      str+="   out[0] <- \"expa\"\n";
+      //Each index of out is a 32 bit integer
+      str+="   out[0] <- 1702391905\n";  //"expa" in decimal
       //Split the 128 bit key into 4 indicies
       str+="   out[1-4] <- key\n";
-      str+="   out[5] <- \"nd 3\"\n";
+      str+="   out[5] <- 1852055603\n";  //"nd 3" in decimal
       //Split the 64 bit nonce into 4 indicies
       str+="   out[6-7] <- nonce\n";
       //pos relates to a section of 512 bits.
-      str+="   out[8-9] <- pos\n";
-      str+="   out[10] <- \"2-by\"\n";
+      str+="   out[8-9] <- pos\n"; //for simplicity we can just use zeros
+      str+="   out[10] <- 841835129\n";  //"2-by" in decimal
       //A repeat of out[1-4]
       str+="   out[11-14] <- key\n";
-      str+="   out[15] <- \"te k\"\n";
+      str+="   out[15] <- 1952784491\n"; //"te k" in decimal
       str+="   RETURN out\n";
 
       //Helper function
@@ -67,16 +67,16 @@ public:
 
       //Helper function
       str+="QR(a, b, c, d)\n";
-      str+="   b BIT-AND ROTL(a + d, 7)\n";
-      str+="   c BIT-AND ROTL(b + a, 9)\n";
-      str+="   d BIT-AND ROTL(c + b, 13)\n";
-      str+="   a BIT-AND ROTL(d + c, 18)\n";
+      str+="   b BIT-XOR ROTL(a + d, 7)\n";
+      str+="   c BIT-XOR ROTL(b + a, 9)\n";
+      str+="   d BIT-XOR ROTL(c + b, 13)\n";
+      str+="   a BIT-XOR ROTL(d + c, 18)\n";
 
       //helper function that genarates 512 bits of cipher
       str+="salsa20(out, in)\n";
       str+="   LOOP for i FROM 0 to 16\n";
       str+="      x[i] <- in[i]\n";
-      str+="   LOOP for 10 times\n";
+      str+="   LOOP 10 times\n";
       //rotations along the columns
       str+="      QR(x[0], x[4], x[8], x[12])\n";
       str+="      QR(x[5], x[9], x[13], x[1])\n";
@@ -93,14 +93,9 @@ public:
       //a helper function
       str+="convertPassword(password,key,nonce)\n";
       str+="   hash <- sha256(password)\n";
-      //make a 128 bit key
-      str+="   LOOP for i from 0 to 16\n";
-      str+="      key += bitset<8>(string.c_str()[i])\n";
-      str+="      key BITSHIFT-LEFT 8\n";
-      //Make the 64 bit nonce from the left half of the key
-      str+="      IF i < 8\n";
-      str+="         nonce += bitset<8>(string.c_str()[i])\n";
-      str+="         nonce BITSHIFT-LEFT 8\n";
+      //make a 128 bit key and a 64 bit nonce from the hash
+      str+="   key = stoi (hash.substr(0,15), nullptr, 16)\n";
+      str+="   nonce = stoi (hash.substr(0,7), nullptr, 16)\n";
       str+="   RETURN key, nonce\n";
       // The encrypt pseudocode
       str+="encrypt(plaintext, password)\n";
@@ -110,8 +105,9 @@ public:
       str+="   RETURN plaintext BIT-XOR out\n";
 
       // The decrypt pseudocode
-      str+="decrypt(ciphertext, key, nonce, pos)\n";
-      str+="   in <- generateInitialState(key, nonce, pos)\n";
+      str+="decrypt(ciphertext, password)\n";
+      str+="   convertPassword(password,key,nonce)\n";
+      str+="   in <- generateInitialState(key, nonce, 0)\n";
       str+="   salsa20(out, in)\n";
       str+="   RETURN ciphertext BIT-XOR out\n";
 
