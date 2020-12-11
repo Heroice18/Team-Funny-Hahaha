@@ -5,6 +5,8 @@
 ********************************************************************/
 #ifndef CIPHER04_H
 #define CIPHER04_H
+#include "sha256.h"
+
 
 /********************************************************************
  * CLASS
@@ -200,7 +202,7 @@ public:
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
 
-      
+
 
       return cipherText ^ out[0];
    }
