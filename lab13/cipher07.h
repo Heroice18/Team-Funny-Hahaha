@@ -6,6 +6,9 @@
 #ifndef CIPHER07_H
 #define CIPHER07_H
 
+#include<array>
+#include<sstream>
+
 /********************************************************************
  * CLASS
  *******************************************************************/
@@ -14,7 +17,7 @@ class Cipher07 : public Cipher
 public:
    virtual std::string getPseudoAuth()  { return "Ethan Nelson"; }
    virtual std::string getCipherName()  { return "(Checkerboard) Polybius Square"; }
-   virtual std::string getEncryptAuth() { return ""; }
+   virtual std::string getEncryptAuth() { return "Thomas Peck"; }
    virtual std::string getDecryptAuth() { return ""; }
 
    /***********************************************************
@@ -74,6 +77,29 @@ public:
       return str;
    }
 
+   std::array<char, 30> makeKey(const std::string &password){
+      std::array<char, 30> key;
+      for(char c = 'A'; c <= 'Z'; c++){
+         key[c-'A'] = c;
+      }
+      key[26] = ' ';
+      key[27] = '.';
+      key[28] = ',';
+      key[29] = '?';
+
+      for(int i = 2; i <= 30; i++){
+         int acc = 0;
+         for(int j = 0; j < password.size(); j++){
+            acc *= 256;
+            acc += (unsigned char)password[j];
+            acc %= i;
+         }
+         char temp = key[i-1];
+         key[i-1] = key[acc];
+         key[acc] = temp;
+      }
+      return key;
+   }
    /**********************************************************
     * ENCRYPT
     * TODO: ADD description
@@ -81,9 +107,18 @@ public:
    virtual std::string encrypt(const std::string & plainText,
                                const std::string & password)
    {
-      std::string cipherText = plainText;
-      // TODO - Add your code here
-      return cipherText;
+      std::stringstream cipherText;
+      auto key = makeKey(password);
+      for(int i = 0; i < plainText.size(); i++){
+         char c = toupper(plainText[i]);
+         for(int j = 0; j < 30; j ++){
+            if(key[j] == c){
+               cipherText << (j/6 + 1);
+               cipherText << (j%6 + 1);
+            }
+         }
+      }
+      return cipherText.str();
    }
 
    /**********************************************************
