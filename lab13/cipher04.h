@@ -202,9 +202,7 @@ public:
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
 
-
-
-      return cipherText/*cipherText ^ out[0]*/;
+      return cipherText/*cipherText ^ out[]*/;
    }
 
    /**********************************************************
