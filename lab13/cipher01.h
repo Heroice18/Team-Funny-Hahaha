@@ -147,7 +147,7 @@ public:
       // loop through the plaintext
       for(int i = 0; i < cipherText.size(); i++)
       {
-         char decryptIndex = (cipherText[i] - decryptKey[i] +26) % 26;
+         char decryptIndex = ((cipherText[i] - decryptKey[i]) % 26 + 26) % 26;
          // convert to ASCII
          decryptIndex += 'A';
          plainText += decryptIndex;
