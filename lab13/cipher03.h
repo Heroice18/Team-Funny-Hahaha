@@ -41,9 +41,6 @@ public:
       // TODO: please format your pseudocode
       // The encrypt pseudocode
       str += "encryption pseudocode\n";
-      str += "size_t len -> plainText size < password size ? plainText size : password size\n";
-      str += "int lenDifference -> plainText size - password size\n";
-      str += "cipherText resize (len + lenDifference, 'x')\n";
       str += "for size_t i -> 0, i < len, increment i\n";
       str += "cipherText[i] -> short int plainText[i] ^ short int password[i]\n";
 
