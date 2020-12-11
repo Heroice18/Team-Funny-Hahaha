@@ -99,7 +99,7 @@ public:
       for (int i = 0; i < 255; i++)
       {
          temp = (temp + tTable[i] + password[i % keyLen]) % mod256;
-         swap(tTable[i], tTable[temp]);
+         std::swap(tTable[i], tTable[temp]);
       }
    
    }
@@ -126,7 +126,7 @@ public:
          i = (i+1) % mod256;
          j = (j + tTable[i]) % mod256;
 
-         swap(tTable[i], tTable[j]);
+         std::swap(tTable[i], tTable[j]);
          int sum = tTable[(tTable[i] + tTable[j]) % mod256];
 
          cipherText[n] = sum ^ plainText[n];
@@ -143,8 +143,24 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      // TODO - Add your code here
+      // set up used variables
+      createTable(password);
+      int i=0;
+      int j=0;
+      std::string plainText;
+
+      // loop for all of the characters in the cipher text
+      for(int n; n < cipherText.length(); n++)
+      {
+         i = (i+1) % 256;
+         j=(j+tTable[i]) % 256;
+
+         std::swap(tTable[i], tTable[j]);
+         int sum = tTable[(tTable[i] + tTable[j]) % n];
+
+         plainText[n] = sum ^ cipherText[n];
+      }
+
       return plainText;
    }
 };
