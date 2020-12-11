@@ -77,7 +77,7 @@ public:
    }
 
    char tTable[255];
-   int mod256 = 256;
+   const int mod256 = 256;
 
    /**********************************************************
     * Helper   Brandon Ison
@@ -123,11 +123,11 @@ public:
       //loop through the plaintext and convert the characters into ciphertext using the tTable
       for(int n =0; n <= plainText.length(); n++)
       {
-         i = (i+1) % 256;
-         j = (j + tTable[i]) % 256;
+         i = (i+1) % mod256;
+         j = (j + tTable[i]) % mod256;
 
          std::swap(tTable[i], tTable[j]);
-         int sum = tTable[(tTable[i] + tTable[j]) % 256];
+         int sum = tTable[(tTable[i] + tTable[j]) % mod256];
 
          cipherText[n] = sum ^ plainText[n];
 
@@ -150,7 +150,6 @@ public:
       int i=0;
       int j=0;
       std::string plainText;
-
       // loop for all of the characters in the cipher text
       for(int n; n < cipherText.length(); n++)
       {

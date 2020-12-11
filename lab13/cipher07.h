@@ -18,8 +18,7 @@ public:
    virtual std::string getPseudoAuth()  { return "Ethan Nelson"; }
    virtual std::string getCipherName()  { return "(Checkerboard) Polybius Square"; }
    virtual std::string getEncryptAuth() { return "Thomas Peck"; }
-   virtual std::string getDecryptAuth() { return ""; }
-
+   virtual std::string getDecryptAuth() { return "Caleb Baird";}
    /***********************************************************
     * GET CIPHER CITATION
     * Returns the citation from which we learned about the cipher
