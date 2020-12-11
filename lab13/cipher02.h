@@ -44,8 +44,8 @@ public:
    {
       std::string str;
 
-      // Helper initialize table function
-      str += "intialize(tTable, key, keyLen)\n";
+      // Helper create table function
+      str += "createTable(tTable, key, keyLen)\n";
       str += "   for i from 0 to 255\n";
       str += "      tTable[i] <- i\n";
       str += "   temp <- 0\n";
