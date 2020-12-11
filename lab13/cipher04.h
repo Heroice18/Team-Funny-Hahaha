@@ -6,8 +6,6 @@
 #ifndef CIPHER04_H
 #define CIPHER04_H
 #include "sha256.h"
-#include <bitset>
-
 
 /********************************************************************
  * CLASS
