@@ -219,9 +219,10 @@ public:
       convertPassword(password, key, nonce);
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
+      std::string outText;
       for (int i = 0; i < 16; i++)
-         plainText = plainText[i] ^ out[i];
-      return plainText;
+         outText[i] = plainText[i] ^ out[i];
+      return outText;
    }
 };
 
