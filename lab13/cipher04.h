@@ -6,6 +6,7 @@
 #ifndef CIPHER04_H
 #define CIPHER04_H
 #include "sha256.h"
+#include <bitset>
 
 
 /********************************************************************
@@ -104,21 +105,27 @@ public:
       str+="   convertPassword(password,key,nonce)\n";
       str+="   in <- generateInitialState(key, nonce, 0)\n";
       str+="   salsa20(out, in)\n";
-      str+="   RETURN plaintext BIT-XOR out\n";
+      str+="   salsaText <- to_string(out[0])\n";
+      str+="   LOOP for i from 0 TO plainText.length()\n";
+      str+="      cipherText[i] <- cipherText[i] BIT-XOR salsaText[i]\n";
+      str+="   RETURN cipherText\n";
 
       // The decrypt pseudocode
       str+="decrypt(ciphertext, password)\n";
       str+="   convertPassword(password,key,nonce)\n";
       str+="   in <- generateInitialState(key, nonce, 0)\n";
       str+="   salsa20(out, in)\n";
-      str+="   RETURN ciphertext BIT-XOR out\n";
+      str+="   salsaText <- to_string(out[0])\n";
+      str+="   LOOP for i from 0 TO cipherText.length()\n";
+      str+="      plainText[i] <- plainText[i] BIT-XOR salsaText[i]\n";
+      str+="   RETURN plainText\n";
 
       return str;
    }
 
    uint32_t * generateInitialState(uint32_t key,uint32_t nonce, uint32_t pos)
    {
-      uint32_t out[16];
+      static uint32_t out[16]; //made static so it doesn't go out of scope
       out[0] = 1702391905;
       out[1] = key;
       out[2] = key;
@@ -141,7 +148,7 @@ public:
 
    uint32_t ROTL(uint32_t a, uint32_t b)
    {
-      (((a) << (b)) | ((a) >> (32 - (b))));
+      return (((a) << (b)) | ((a) >> (32 - (b))));
    }
 
    void QR(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
@@ -201,7 +208,11 @@ public:
       convertPassword(password, key, nonce);
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
-
+      std::string salsaText = std::to_string(out[0]);
+      for (int i = 0; i < plainText.length(); i++)
+      {
+         cipherText[i] = cipherText[i] ^ salsaText[i];  
+      }
       return cipherText/*cipherText ^ out[]*/;
    }
 
@@ -219,10 +230,10 @@ public:
       convertPassword(password, key, nonce);
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
-      std::string outText;
-      for (int i = 0; i < 16; i++)
-         outText[i] = plainText[i] ^ out[i];
-      return outText;
+      std::string salsaText = std::to_string(out[0]);
+      for (int i = 0; i < cipherText.length(); i++)
+         plainText[i] = plainText[i] ^ salsaText[i];
+      return plainText;
    }
 };
 
