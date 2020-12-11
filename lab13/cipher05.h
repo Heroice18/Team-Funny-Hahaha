@@ -135,7 +135,7 @@ public:
       int pos = 0;
       int cipherTextLength = cipherText.length();
 
-      for (;pos < cipherTextLength; pos++)
+      for (;pos < cipherTextLength;)
       {
          char letterRow = 'A';
          char cipherTextLetter = cipherText[pos];
