@@ -14,7 +14,7 @@ class Cipher03 : public Cipher
 public:
    virtual std::string getPseudoAuth()  { return "Jonathan Hald"; }
    virtual std::string getCipherName()  { return "One-Time Pad"; }
-   virtual std::string getEncryptAuth() { return "encrypt author"; }
+   virtual std::string getEncryptAuth() { return "Will Von Doersten"; }
    virtual std::string getDecryptAuth() { return "Brandon Ison"; }
 
    /***********************************************************
@@ -59,13 +59,17 @@ public:
 
    /**********************************************************
     * ENCRYPT
-    * TODO: ADD description
+    * Description: This function takes plaintext and a password
+    * and encrypts using XOR in a loop to return ciphertext.
     **********************************************************/
    virtual std::string encrypt(const std::string & plainText,
                                const std::string & password)
    {
       std::string cipherText = plainText;
-      // TODO - Add your code here
+      size_t sizeText = cipherText.size();
+
+      for (size_t i = 0; i < sizeText; i++)
+         cipherText[i] = (short int) plainText[i] ^ (short int) password[i];
       
       return cipherText;
    }

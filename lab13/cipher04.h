@@ -17,7 +17,7 @@ public:
    virtual std::string getPseudoAuth()  { return "Tyler Peart"; }
    virtual std::string getCipherName()  { return "Salsa20"; }
    virtual std::string getEncryptAuth() { return "Jonathan Hald"; }
-   virtual std::string getDecryptAuth() { return "decrypt author"; }
+   virtual std::string getDecryptAuth() { return "Will Von Doersten"; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -214,8 +214,16 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      // std::string plainText = cipherText;
-      
+      std::string plainText = cipherText;
+      uint32_t key;
+      uint32_t nonce;
+      uint32_t out[16];
+      convertPassword(password, key, nonce);
+      uint32_t * in = generateInitialState(key, nonce, 0);
+      salsa20(out, in);
+      for (int i = 0; i < 16; i++)
+         plainText = plainText[i] ^ out[i];
+      return plainText;
    }
 };
 
