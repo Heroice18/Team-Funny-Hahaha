@@ -140,8 +140,18 @@ public:
    virtual std::string decrypt(const std::string & cipherText, 
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      // TODO - Add your code here
+      // Set up variables
+      std::string decryptKey = createKey(cipherText, password);
+      std::string plainText;
+
+      // loop through the plaintext
+      for(int i = 0; i < cipherText.size(); i++)
+      {
+         char decryptIndex = (cipherText[i] - decryptKey[i] +26) % 26;
+         // convert to ASCII
+         decryptIndex += 'A';
+         plainText += decryptIndex;
+      }
       return plainText;
    }
 };
