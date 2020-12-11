@@ -41,13 +41,14 @@ public:
       // TODO: please format your pseudocode
       // The encrypt pseudocode
       str += "encryption pseudocode\n";
+      str += "size_t len <- cipherText size\n";
       str += "for size_t i -> 0, i < len, increment i\n";
       str += "cipherText[i] -> short int plainText[i] ^ short int password[i]\n";
 
 
       // The decrypt pseudocode
       str += "decryption pseudocode\n";
-      str += "size_t len -> cipherText size\n";
+      str += "size_t len -> plainText size\n";
       str += "for size_t i -> 0, i < len, increment i\n";
       str += "plainText[i] -> short int cipherText[i] ^ short int password[i]\n";
 
