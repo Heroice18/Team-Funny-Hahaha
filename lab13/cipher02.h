@@ -50,8 +50,8 @@ public:
       str += "      tTable[i] <- i\n";
       str += "   temp <- 0\n";
       str += "   for i from 0 to 255\n";
-      str += "      temp <- (temp + T[i] + key[i mod keyLen]) mod 256\n";
-      str += "      swap(T[i], T[temp])\n";
+      str += "      temp <- (temp + tTable[i] + key[i mod keyLen]) mod 256\n";
+      str += "      swap(T[i], tTable[temp])\n";
 
       // The encrypt pseudocode
       str += "encryptMsg(tTable, plainText, key)\n";
@@ -59,7 +59,7 @@ public:
       str += "      i <- (i + 1) mod 256\n";
       str += "      j <- (j + tTable[i]) mod 256\n";
       str += "      swap(&tTable[i], &tTable[j])\n";
-      str += "      sum <- tTable[(tTable[i] + tTable[j]) % N]\n";
+      str += "      sum <- tTable[(tTable[i] + tTable[j]) mod 256]\n";
       str += "      cipherText <- sum XOR plainText[n]\n";
       str += "   RETURN cipherText\n";
 
@@ -69,7 +69,7 @@ public:
       str += "      i <- (i + 1) mod 256\n";
       str += "      j <- (j + tTable[i]) mod 256\n";
       str += "      swap(&tTable[i], &tTable[j])\n";
-      str += "      sum <- tTable[(tTable[i] + tTable[j]) % N]\n";
+      str += "      sum <- tTable[(tTable[i] + tTable[j]) mod 256\n";
       str += "      plainText <- sum XOR cipherText[n]\n";
       str += "   RETURN plainText\n";
 
@@ -123,11 +123,11 @@ public:
       //loop through the plaintext and convert the characters into ciphertext using the tTable
       for(int n =0; n <= plainText.length(); n++)
       {
-         i = (i+1) % mod256;
-         j = (j + tTable[i]) % mod256;
+         i = (i+1) % 256;
+         j = (j + tTable[i]) % 256;
 
          std::swap(tTable[i], tTable[j]);
-         int sum = tTable[(tTable[i] + tTable[j]) % mod256];
+         int sum = tTable[(tTable[i] + tTable[j]) % 256];
 
          cipherText[n] = sum ^ plainText[n];
 
@@ -158,7 +158,7 @@ public:
          j=(j+tTable[i]) % 256;
 
          std::swap(tTable[i], tTable[j]);
-         int sum = tTable[(tTable[i] + tTable[j]) % n];
+         int sum = tTable[(tTable[i] + tTable[j]) % 256];
 
          plainText[n] = sum ^ cipherText[n];
       }
