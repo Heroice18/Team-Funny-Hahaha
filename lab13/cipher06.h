@@ -25,6 +25,7 @@ public:
    {
       std::string citation;
       citation += "http://www.crypto-it.net/eng/simple/columnar-transposition.html";
+      return citation;
    }
    
    /**********************************************************
@@ -97,8 +98,33 @@ public:
                                const std::string & password)
    {
       std::string plainText = cipherText;
-      // TODO - Add your code here
-      return plainText;
+      std::vector<int> numkey = numbersFromKey(password);
+      int numkeyLength = numkey.size();
+      std::vector<std::string> matrix;
+      int columnSize = plainText.length() / numkeyLength;
+
+      for (int i = 0; i < numkeyLength; i++)
+      {
+         int j = numkey[i];
+         if (j < plainText.length() % numkeyLength)
+         {
+            matrix[j] = plainText.substr(0,columnSize);
+            plainText = plainText.substr(columnSize);
+         }
+         else
+         {
+            matrix[j] = plainText.substr(0, ++columnSize);
+            plainText = plainText.substr(++columnSize);
+         }
+      }
+      
+      std::string result = "";
+      int plainLength = plainText.length();
+      for (int i = 0; i < plainLength; i++)
+      {
+         result += matrix[i % password.length()][i / password.length()];
+      }
+      return result;
    }
 };
 
