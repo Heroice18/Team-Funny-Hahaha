@@ -12,8 +12,8 @@
 class Cipher02 : public Cipher
 {
 public:
-   virtual std::string getPseudoAuth()  { return "pseudocode author"; }
-   virtual std::string getCipherName()  { return "cipher name"; }
+   virtual std::string getPseudoAuth()  { return "Will Von Doersten"; }
+   virtual std::string getCipherName()  { return "RC4 Cipher"; }
    virtual std::string getEncryptAuth() { return "encrypt author"; }
    virtual std::string getDecryptAuth() { return "decrypt author"; }
 
@@ -23,7 +23,17 @@ public:
     ***********************************************************/
    virtual std::string getCipherCitation()
    {
-      return std::string("citation");
+      std::string sources;
+
+      sources += "Wikipedia.com, ";
+      sources += " RC4 Cipher,\n   retrieved: 9 DEC 2020\n";
+      sources += "https://en.wikipedia.org/wiki/RC4\n";
+
+      sources += "Chris Kowalczyk, ";
+      sources += " RC4,\n   retrieved: 9 DEC 2020\n";
+      sources += "http://www.crypto-it.net/eng/symmetric/rc4.html\n";
+
+      return sources;
    }
    
    /**********************************************************
@@ -34,12 +44,34 @@ public:
    {
       std::string str;
 
-      // TODO: please format your pseudocode
+      // Helper initialize table function
+      str += "intialize(tTable, key, keyLen)\n";
+      str += "   for i from 0 to 255\n";
+      str += "      tTable[i] <- i\n";
+      str += "   temp <- 0\n";
+      str += "   for i from 0 to 255\n";
+      str += "      temp <- (temp + T[i] + key[i mod keyLen]) mod 256\n";
+      str += "      swap(T[i], T[temp])\n";
+
       // The encrypt pseudocode
-      str =  "insert the encryption pseudocode\n";
+      str += "encryptMsg(tTable, plainText, key)\n";
+      str += "   for n from length plainText to end\n";
+      str += "      i <- (i + 1) mod 256\n";
+      str += "      j <- (j + tTable[i]) mod 256\n";
+      str += "      swap(&tTable[i], &tTable[j])\n";
+      str += "      sum <- tTable[(tTable[i] + tTable[j]) % N]\n";
+      str += "      cipherText <- sum XOR plainText[n]\n";
+      str += "   RETURN cipherText\n";
 
       // The decrypt pseudocode
-      str += "insert the decryption pseudocode\n";
+      str += "decryptMsg(tTable, cipherText, key)\n";
+      str += "   for n from length cipherText to end\n";
+      str += "      i <- (i + 1) mod 256\n";
+      str += "      j <- (j + tTable[i]) mod 256\n";
+      str += "      swap(&tTable[i], &tTable[j])\n";
+      str += "      sum <- tTable[(tTable[i] + tTable[j]) % N]\n";
+      str += "      plainText <- sum XOR cipherText[n]\n";
+      str += "   RETURN plainText\n";
 
       return str;
    }

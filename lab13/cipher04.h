@@ -133,9 +133,8 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      // TODO - Add your code here
-      return plainText;
+      // std::string plainText = cipherText;
+      
    }
 };
 
