@@ -204,7 +204,7 @@ public:
 
 
 
-      return cipherText ^ out[0];
+      return cipherText/*cipherText ^ out[0]*/;
    }
 
    /**********************************************************
