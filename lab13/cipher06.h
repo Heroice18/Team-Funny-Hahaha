@@ -52,7 +52,7 @@ public:
 
       str +=  "numbersFromKey(key)\n";
       str += "  vector<pair<char, int>> pairs\n";
-      str += "  for 0 <= i < key.length\n"; 
+      str += "  for 0 <= i < key.length\n";
       str += "    pairs[i] = pair(key[i], i)\n";
       str += "  stable_sort(pairs.begin, pairs.end, [](a,b){return a.get<0>() < b.get<0>();})\n";
       str += "  vector<int> results\n";
@@ -198,34 +198,41 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
       std::vector<int> numkey = numbersFromKey(password);
-      int numkeyLength = numkey.size();
+      int numColumns = numkey.size();
       std::vector<std::string> matrix;
-      int columnSize = plainText.length() / numkeyLength;
+      int columnSize  = cipherText.length() / numColumns + 1;
+      int numLargeColumns = cipherText.length() % numColumns;
 
-      for (int i = 0; i < numkeyLength; i++)
+      int cipherTextIndex = 0;
+      for (int i = 0; i < numColumns; i++)
       {
-         int j = numkey[i];
-         if (j < plainText.length() % numkeyLength)
+         if (i == numLargeColumns)
+            columnSize--;
+
+         matrix.push_back(cipherText.substr(cipherTextIndex, cipherTextIndex + columnSize));
+         cipherTextIndex += columnSize;
+      }
+
+      std::vector<std::pair<std::string, int> > indexColumnPairs;
+      for (int i = 0; i < numColumns; i++)
+         indexColumnPairs.push_back(std::pair<std::string, int>(matrix[i], numkey[i]));
+
+      // Rearrange the columns
+      std::stable_sort(indexColumnPairs.begin(), indexColumnPairs.end(),
+                       columnNumSorter);
+
+      std::string plainText = "";
+      for (int rowI = 0; rowI < columnSize + 1; ++rowI)
+      {
+         for (int colI = 0; colI < numColumns; ++colI)
          {
-            matrix[j] = plainText.substr(0,columnSize);
-            plainText = plainText.substr(columnSize);
-         }
-         else
-         {
-            matrix[j] = plainText.substr(0, ++columnSize);
-            plainText = plainText.substr(++columnSize);
+            if (rowI == columnSize && colI < numLargeColumns)
+               plainText += matrix[colI][rowI];
          }
       }
-      
-      std::string result = "";
-      int plainLength = plainText.length();
-      for (int i = 0; i < plainLength; i++)
-      {
-         result += matrix[i % password.length()][i / password.length()];
-      }
-      return result;
+
+      return plainText;
    }
 };
 
