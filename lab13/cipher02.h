@@ -138,7 +138,9 @@ public:
 
    /**********************************************************
     * DECRYPT
-    * TODO: ADD description
+    * Takes in a password and cipher text. Passes the password
+    * to createTable() to get the key and used the key to
+    * decipher the text. Return the plain text
     **********************************************************/
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
