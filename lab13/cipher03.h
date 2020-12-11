@@ -15,7 +15,7 @@ public:
    virtual std::string getPseudoAuth()  { return "Jonathan Hald"; }
    virtual std::string getCipherName()  { return "One-Time Pad"; }
    virtual std::string getEncryptAuth() { return "encrypt author"; }
-   virtual std::string getDecryptAuth() { return "decrypt author"; }
+   virtual std::string getDecryptAuth() { return "Brandon Ison"; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -71,14 +71,22 @@ public:
    }
 
    /**********************************************************
-    * DECRYPT
+    * DECRYPT Brandon Ison
     * TODO: ADD description
     **********************************************************/
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
       std::string plainText = cipherText;
-      // TODO - Add your code here
+
+      size_t sizeText = plainText.size();
+
+      for (size_t i = 0; i < sizeText; i++)
+      {
+         plainText[i] = (short int) cipherText[i] ^ (short int) password[i];
+      }
+        
+      
       return plainText;
    }
 };

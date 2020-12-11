@@ -15,7 +15,7 @@ class Cipher01 : public Cipher
 public:
    virtual std::string getPseudoAuth()  { return "Brandon Ison"; }
    virtual std::string getCipherName()  { return "Vigenère Cipher"; }
-   virtual std::string getEncryptAuth() { return "Brandon Ison"; }
+   virtual std::string getEncryptAuth() { return "Ethan Nelson"; }
    virtual std::string getDecryptAuth() { return "Brandon Ison"; }
 
    /***********************************************************
@@ -25,9 +25,9 @@ public:
    virtual std::string getCipherCitation()
    {
       std::string sources;
-      sources += "How much do you know about the Vigenère cipher?\n";
+      sources += "How much do you know about the Vigenere cipher?\n";
       sources += "\t https://community.ibm.com/community/user/ibmz-and-linuxone/blogs/subhasish-sarkar1/2020/07/17/how-much-do-you-know-about-the-vigenere-cipher \n";
-      sources += "Cryptography, Information Theory, and Error-Correction";
+      sources += "Cryptography, Information Theory, and Error-Correction\n";
       sources += "\t https://books.google.com/books?id=fd2LtVgFzoMC&pg=PA21#v=onepage&q&f=false"; 
       return sources;
    }
@@ -42,7 +42,7 @@ public:
 
 
        // The helper function
-      codeP += "createKey(plaintext, key)\n";
+      codeP = "createKey(plaintext, key)\n";
       // Get the size of the plaintext so we can make the size of the key match
       codeP += "  sizeV <- plaintext.size() \n";
       //For loop going through and editing the key
@@ -57,7 +57,7 @@ public:
       codeP += "\n";
       
       // The encrypt pseudocode
-      codeP =  "encryptV(plaintext, key)\n";
+      codeP +=  "encryptV(plaintext, key)\n";
       codeP += "  encryptKey <- createKey(plaintext, key)\n";
       codeP += "  encryptedText <- empty()\n";
       codeP += "  FOR i is all values in plaintext\n";
@@ -82,14 +82,33 @@ public:
       codeP += "  RETURN decryptedText\n";
       codeP += "\n";
 
-     
-
-
-      
-
       return codeP;
    }
 
+   /**********************************************************
+    * CREATE_KEY (Ethan Nelson)
+    * Create Key creates the key that is to be used during the
+    * encryption process
+    **********************************************************/
+   virtual std::string createKey(const std::string plainText, 
+                               std::string key)
+   {
+      // get the size of the plaintext being used
+      int sizeV = plainText.size();
+      // loop forever (until the plaintext and key sizes are the same)
+      for(int i = 0;  ; i++)
+      {
+         // resets the loop
+         if(sizeV == i)
+            i = 0;
+
+         // checks to see if the plaintext and key are the same
+         if(plainText.size() == key.size())
+            return key;
+
+         key.push_back(key[i]);
+      }
+   }
    /**********************************************************
     * ENCRYPT
     * TODO: ADD description
@@ -97,9 +116,21 @@ public:
    virtual std::string encrypt(const std::string & plainText, 
                                const std::string & password)
    {
-      std::string cipherText = plainText;
-      // TODO - Add your code here
-      return cipherText;
+      // Set up variables
+      std::string encryptKey = createKey(plainText, password);
+      std::string encryptedText;
+
+      // loop through the plaintext
+      for(int i = 0; i < plainText.size(); i++)
+      {
+         // find the location in the alphabet the key is at
+         char encryptIndex = (plainText[i] + encryptKey[i]) % 26;
+         // convert to ASCII
+         encryptIndex += 'A';
+         encryptedText.push_back(encryptIndex);
+      }
+
+      return encryptedText;
    }
 
    /**********************************************************
