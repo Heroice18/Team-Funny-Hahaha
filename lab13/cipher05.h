@@ -15,7 +15,7 @@ public:
    virtual std::string getPseudoAuth()  { return "Caleb Baird"; }
    virtual std::string getCipherName()  { return "Beaufort Cipher"; }
    virtual std::string getEncryptAuth() { return "Tyler Peart"; }
-   virtual std::string getDecryptAuth() { return "decrypt author"; }
+   virtual std::string getDecryptAuth() { return "Jonathan Hald"; }
 
    /***********************************************************
     * GET CIPHER CITATION
@@ -116,7 +116,8 @@ public:
             ptLetter = (ptLetter - 'A' + 1) % 26 + 'A';
             letterRow = (letterRow - 'A' + 1) % 26 + 'A';
          }
-         cipherText.append(letterRow);
+         // cipherText.append(letterRow);
+         cipherText += letterRow;
       }
       return cipherText;
    }

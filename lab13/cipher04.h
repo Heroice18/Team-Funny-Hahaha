@@ -14,7 +14,7 @@ class Cipher04 : public Cipher
 public:
    virtual std::string getPseudoAuth()  { return "Tyler Peart"; }
    virtual std::string getCipherName()  { return "Salsa20"; }
-   virtual std::string getEncryptAuth() { return "encrypt author"; }
+   virtual std::string getEncryptAuth() { return "Jonathan Hald"; }
    virtual std::string getDecryptAuth() { return "decrypt author"; }
 
    /***********************************************************
@@ -60,7 +60,7 @@ public:
       str+="   RETURN out\n";
 
       //Helper function
-      str+="ROTL(a, b)\n";
+      str+="uint32 ROTL(a, b)\n";
       str+="   x <- a LEFTSHIFT b\n";
       str+="   y <- a RIGHTSHIFT (32 - b)\n";
       str+="   RETURN x BIT-OR y\n";
@@ -91,10 +91,10 @@ public:
       str+="      out[1] <- x[i] + in[i]\n";
 
       //a helper function
-      str+="convertPassword(password,key,nonce)\n";
-      str+="   hash <- sha256(password)\n";
-      //make a 128 bit key and a 64 bit nonce from the hash
-      str+="   key = stoi (hash.substr(0,15), nullptr, 16)\n";
+      str+="void convertPassword(password,int32 &key,int32 &nonce)\n";
+      str+="   string hash <- sha256(password)\n";
+      //make a 32 bit key and a nonce from the hash
+      str+="   key = stoi (hash.substr(0,7), nullptr, 16)\n";
       str+="   nonce = stoi (hash.substr(0,7), nullptr, 16)\n";
       str+="   RETURN key, nonce\n";
       // The encrypt pseudocode
@@ -114,6 +114,76 @@ public:
       return str;
    }
 
+   uint32_t * generateInitialState(uint32_t key,uint32_t nonce, uint32_t pos)
+   {
+      uint32_t out[16];
+      out[0] = 1702391905;
+      out[1] = key;
+      out[2] = key;
+      out[3] = key;
+      out[4] = key;
+      out[5] = 1852055603;
+      out[6] = nonce;
+      out[7] = nonce;
+      out[8] = pos;
+      out[9] = pos;
+      out[10] = 841835129;
+      out[11] = key;
+      out[12] = key;
+      out[13] = key;
+      out[14] = key;
+      out[15] = 1952784491;
+
+      return out;
+   }
+
+   uint32_t ROTL(uint32_t a, uint32_t b)
+   {
+      (((a) << (b)) | ((a) >> (32 - (b))));
+   }
+
+   void QR(uint32_t a, uint32_t b, uint32_t c, uint32_t d)
+   {
+      (b ^= ROTL(a + d, 7),	
+	    c ^= ROTL(b + a, 9),	
+	    d ^= ROTL(c + b,13),	
+	    a ^= ROTL(d + c,18));
+   }
+
+   void salsa20(uint32_t out[16], uint32_t const in[16])
+   {
+      int i;
+	   uint32_t x[16];
+
+	   for (i = 0; i < 16; ++i)
+      {
+		   x[i] = in[i];
+      }
+	   for (i = 0; i < 10; i += 2) 
+      {
+		   QR(x[ 0], x[ 4], x[ 8], x[12]);
+		   QR(x[ 5], x[ 9], x[13], x[ 1]);
+		   QR(x[10], x[14], x[ 2], x[ 6]);	
+		   QR(x[15], x[ 3], x[ 7], x[11]);	
+	
+		   QR(x[ 0], x[ 1], x[ 2], x[ 3]);
+		   QR(x[ 5], x[ 6], x[ 7], x[ 4]);
+		   QR(x[10], x[11], x[ 8], x[ 9]);	
+		   QR(x[15], x[12], x[13], x[14]);
+	   }
+	   for (i = 0; i < 16; ++i)
+      {
+		   out[i] = x[i] + in[i];
+      }
+   }
+
+   void convertPassword(std::string password, uint32_t & key, uint32_t & nonce)
+   {
+      std::string hash = sha256(password);
+      key = stoi(hash.substr(0,7), nullptr, 16);
+      nonce = stoi(hash.substr(0,7), nullptr, 16);
+   }
+
    /**********************************************************
     * ENCRYPT
     * TODO: ADD description
@@ -123,7 +193,16 @@ public:
    {
       std::string cipherText = plainText;
       // TODO - Add your code here
-      return cipherText;
+      uint32_t key;
+      uint32_t nonce;
+      uint32_t out[16];
+      convertPassword(password, key, nonce);
+      uint32_t * in = generateInitialState(key, nonce, 0);
+      salsa20(out, in);
+
+      
+
+      return cipherText ^ out[0];
    }
 
    /**********************************************************
