@@ -14,7 +14,7 @@ class Cipher02 : public Cipher
 public:
    virtual std::string getPseudoAuth()  { return "Will Von Doersten"; }
    virtual std::string getCipherName()  { return "RC4 Cipher"; }
-   virtual std::string getEncryptAuth() { return "encrypt author"; }
+   virtual std::string getEncryptAuth() { return "Brandon Ison"; }
    virtual std::string getDecryptAuth() { return "Ethan Nelson"; }
 
    /***********************************************************
@@ -76,15 +76,63 @@ public:
       return str;
    }
 
+   char tTable[255];
+   int mod256 = 256;
+
    /**********************************************************
-    * ENCRYPT
-    * TODO: ADD description
+    * Helper   Brandon Ison
+    * TODO: The createTable function fille the tTable. The tTable
+    *  is the encryption table which we use to schedule the iterations
+    *  of the key as we encrypt/decrypt the text.
+    **********************************************************/
+   virtual void createTable(const std::string & password)
+   {
+      
+      int keyLen = password.length();
+      for (int i = 0; i < 255; i++)
+      {
+         tTable[i] = i;
+      }
+      
+      int temp = 0;
+
+      for (int i = 0; i < 255; i++)
+      {
+         temp = (temp + tTable[i] + password[i % keyLen]) % mod256;
+         swap(tTable[i], tTable[temp]);
+      }
+   
+   }
+
+   /**********************************************************
+    * ENCRYPT  Brandon Ison
+    * TODO: The encrypt function takes in a plaintext and a password
+    * and returns the encrypted text. We create the tTable using the createTable
+    * function and passing in the password. 
     **********************************************************/
    virtual std::string encrypt(const std::string & plainText,
                                const std::string & password)
    {
       std::string cipherText = plainText;
-      // TODO - Add your code here
+      //fill the tTable with the iterations for the key
+      createTable(password);
+
+      int i = 0;
+      int j = 0;
+
+      //loop through the plaintext and convert the characters into ciphertext using the tTable
+      for(int n =0; n <= plainText.length(); n++)
+      {
+         i = (i+1) % mod256;
+         j = (j + tTable[i]) % mod256;
+
+         swap(tTable[i], tTable[j]);
+         int sum = tTable[(tTable[i] + tTable[j]) % mod256];
+
+         cipherText[n] = sum ^ plainText[n];
+
+      }
+
       return cipherText;
    }
 
