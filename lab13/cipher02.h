@@ -76,8 +76,8 @@ public:
       return str;
    }
 
-   char tTable[255];
-   int mod256 = 256;
+   unsigned char tTable[256];
+   const int mod256 = 256;
 
    /**********************************************************
     * Helper   Brandon Ison
@@ -89,14 +89,14 @@ public:
    {
       
       int keyLen = password.length();
-      for (int i = 0; i < 255; i++)
+      for (int i = 0; i < 256; i++)
       {
          tTable[i] = i;
       }
       
       int temp = 0;
 
-      for (int i = 0; i < 255; i++)
+      for (int i = 0; i < 256; i++)
       {
          temp = (temp + tTable[i] + password[i % keyLen]) % mod256;
          std::swap(tTable[i], tTable[temp]);
@@ -130,7 +130,6 @@ public:
          int sum = tTable[(tTable[i] + tTable[j]) % 256];
 
          cipherText[n] = sum ^ plainText[n];
-
       }
 
       return cipherText;
@@ -149,16 +148,16 @@ public:
       createTable(password);
       int i=0;
       int j=0;
-      std::string plainText;
-
+      std::string plainText  = cipherText;
+      
       // loop for all of the characters in the cipher text
-      for(int n; n < cipherText.length(); n++)
+      for(int n = 0; n <= cipherText.length(); n++)
       {
-         i = (i+1) % 256;
-         j=(j+tTable[i]) % 256;
+         i = (i+1) % mod256;
+         j=(j+tTable[i]) % mod256;
 
          std::swap(tTable[i], tTable[j]);
-         int sum = tTable[(tTable[i] + tTable[j]) % 256];
+         int sum = tTable[(tTable[i] + tTable[j]) % mod256];
 
          plainText[n] = sum ^ cipherText[n];
       }

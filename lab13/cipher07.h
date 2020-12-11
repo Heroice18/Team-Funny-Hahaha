@@ -68,7 +68,7 @@ public:
       str =  "Table\n";
       str =  "0 12345\n";
       str =  "1 abcde\n";
-      str =  "2fghij\n";
+      str =  "2 fghij\n";
       str =  "3 klmno\n";
       str =  "4 pqrst\n";
       str =  "5 uvwxy/z\n";
