@@ -93,16 +93,6 @@ public:
    }
 
    /**********************************************************
-    * numIndexSorter :: Simple sorting predicate to arrange the
-    * numIndexPairs according to the index value.
-    **********************************************************/
-   static bool numIndexSorter(std::pair<int, int> lhs,
-                    std::pair<int, int> rhs)
-   {
-      return std::get<1>(lhs) < std::get<1>(rhs);
-   }
-
-   /**********************************************************
     * numbersFromKey :: Takes a key string and returns a vector
     * of numbers, where each number replaces a letter with its
     * alphabetical order number based on the other letters.
@@ -126,16 +116,6 @@ public:
          results.push_back(std::get<1>(charIndexPairs[i]));
 
       return results;
-   }
-
-   /**********************************************************
-    * columnNumSorter :: Simple sorting predicate to arrange
-    * the columNumPairs by the num value.
-   **********************************************************/
-   static bool columnNumSorter(std::pair<std::string, int> lhs,
-                                 std::pair<std::string, int> rhs)
-   {
-      return std::get<1>(lhs) < std::get<1>(rhs);
    }
 
    /**********************************************************
@@ -177,38 +157,36 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
+
+      std::string text = cipherText;
       std::vector<int> numkey = numbersFromKey(password);
-      int numColumns = numkey.size();
       std::vector<std::string> matrix;
-      int columnSize  = cipherText.length() / numColumns + 1;
-      int numLargeColumns = cipherText.length() % numColumns;
 
-      int cipherTextIndex = 0;
-      for (int i = 0; i < numColumns; i++)
+      int numColumns = numkey.size();
+      int columnSize = text.length() / numColumns + 1;
+      int numLargeColumns = text.length() % numColumns;
+
+      matrix.resize(numColumns, "");
+
+      int cipherTextLength = text.length();
+      for (int i = 0; i < numColumns; ++i)
       {
-         if (i == numLargeColumns)
-            columnSize--;
-
-         matrix.push_back(cipherText.substr(cipherTextIndex, cipherTextIndex + columnSize));
-         cipherTextIndex += columnSize;
-      }
-
-      std::vector<std::pair<std::string, int> > indexColumnPairs;
-      for (int i = 0; i < numColumns; i++)
-         indexColumnPairs.push_back(std::pair<std::string, int>(matrix[i], numkey[i]));
-
-      // Rearrange the columns
-      std::stable_sort(indexColumnPairs.begin(), indexColumnPairs.end(),
-                       columnNumSorter);
-
-      std::string plainText = "";
-      for (int rowI = 0; rowI < columnSize + 1; ++rowI)
-      {
-         for (int colI = 0; colI < numColumns; ++colI)
+         int j = numkey[i];
+         if (j < cipherTextLength % numColumns)
          {
-            if (rowI == columnSize && colI < numLargeColumns)
-               plainText += matrix[colI][rowI];
+            matrix[j] = text.substr(0, columnSize);
+            text = text.substr(columnSize);
          }
+         else
+         {
+            matrix[j] = text.substr(0, columnSize - 1);
+            text = text.substr(columnSize - 1);
+         }
+      }
+      std::string plainText = "";
+      for (int i = 0; i < cipherTextLength; ++i)
+      {
+         plainText += matrix[i % numColumns][i / numColumns];
       }
 
       return plainText;
