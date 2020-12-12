@@ -51,13 +51,13 @@ public:
       str += "    plainTextLengh <- # letters in plainText\n";
       str += "\n";
       str += "    FOR pos < plainTextLength DO\n";
-      str += "       letterRow <- 'A'\n";
+      str += "       letterRow <- ' '\n";
       str += "       plainTextLetter <- plainText[pos]\n";
       str += "\n";
       str += "       WHILE plainTextLetter != key[pos % len(key)] DO\n";
-      str += "          plainTextLetter <- (plainTextLetter - 'A' + 1)";
-      str += " MOD 26 + 'A'\n";
-      str += "          letterRow <- (letterRow - 'A' + 1) MOD 26 + 'A'\n";
+      str += "          plainTextLetter <- (plainTextLetter - ' ' + 1)";
+      str += " MOD 95 + ' '\n";
+      str += "          letterRow <- (letterRow - ' ' + 1) MOD 95 + ' '\n";
       str += "       END WHILE\n";
       str += "\n";
       str += "       cipherText += letterRow\n";
@@ -74,13 +74,13 @@ public:
       str += "    cipherTextLengh <- # letters in cipherText\n";
       str += "\n";
       str += "    FOR pos < cipherTextLength DO\n";
-      str += "       letterRow <- 'A'\n";
+      str += "       letterRow <- ' '\n";
       str += "       cipherTextLetter <- cipherText[pos]\n";
       str += "\n";
       str += "       WHILE cipherTextLetter != key[pos % len(key)] DO\n";
-      str += "          cipherTextLetter <- (cipherTextLetter - 'A' + 1)";
-      str += " MOD 26 + 'A'\n";
-      str += "          letterRow <- (letterRow - 'A' + 1) MOD 26 + 'A'\n";
+      str += "          cipherTextLetter <- (cipherTextLetter - ' ' + 1)";
+      str += " MOD 95 + ' '\n";
+      str += "          letterRow <- (letterRow - ' ' + 1) MOD 95 + ' '\n";
       str += "       END WHILE\n";
       str += "\n";
       str += "       plainText += letterRow\n";
@@ -100,23 +100,19 @@ public:
    virtual std::string encrypt(const std::string & plainText,
                                const std::string & password)
    {
-      std::string cipherText;// = plainText;
-      // TODO - Add your code here
-      cipherText = "";
-      int pos = 0;
+      std::string cipherText = "";
       int ptLength = plainText.length();
       int pwdLength = password.length();
 
-      for (;pos < ptLength; pos++)
+      for (int pos = 0; pos < ptLength; ++pos)
       {
-         char letterRow = 'A';
+         char letterRow = ' ';
          char ptLetter = plainText[pos];
          while (ptLetter != password[pos % pwdLength])
          {
-            ptLetter = (ptLetter - 'A' + 1) % 26 + 'A';
-            letterRow = (letterRow - 'A' + 1) % 26 + 'A';
+            ptLetter = (ptLetter - ' ' + 1) % 95 + ' ';
+            letterRow = (letterRow - ' ' + 1) % 95 + ' ';
          }
-         // cipherText.append(letterRow);
          cipherText += letterRow;
       }
       return cipherText;
@@ -129,23 +125,18 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      // TODO - Add your code here
-      plainText = "";
-      int pos = 0;
+      std::string plainText = "";
       int cipherTextLength = cipherText.length();
-
-      for (;pos < cipherTextLength;)
+      for (int pos = 0; pos < cipherTextLength; ++pos)
       {
-         char letterRow = 'A';
+         char letterRow = ' ';
          char cipherTextLetter = cipherText[pos];
          while (cipherTextLetter != password[pos % password.length()])
          {
-            cipherTextLetter = (cipherTextLetter - 'A' + 1) % 26 + 'A';
-            letterRow = (letterRow - 'A' + 1) % 26 + 'A';
+            cipherTextLetter = (cipherTextLetter - ' ' + 1) % 95 + ' ';
+            letterRow = (letterRow - ' ' + 1) % 95 + ' ';
          }
          plainText += letterRow;
-         pos +=1;
       }
 
       return plainText;

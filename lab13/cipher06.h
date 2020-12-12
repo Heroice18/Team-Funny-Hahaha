@@ -47,12 +47,12 @@ public:
       str += "  numkey = numbersFromKey(key)\n";
       str += "  result = \"\"\n";
       str += "  for 0 <= i < numkey.length\n";
-      str += "    result += matrix[i]\n";
+      str += "    result += matrix[numkey[i]]\n";
       str += "  return result\n\n";
 
       str +=  "numbersFromKey(key)\n";
       str += "  vector<pair<char, int>> pairs\n";
-      str += "  for 0 <= i < key.length\n"; 
+      str += "  for 0 <= i < key.length\n";
       str += "    pairs[i] = pair(key[i], i)\n";
       str += "  stable_sort(pairs.begin, pairs.end, [](a,b){return a.get<0>() < b.get<0>();})\n";
       str += "  vector<int> results\n";
@@ -63,15 +63,17 @@ public:
       str +=  "decrypt(ciphertext, key)\n";
       str += "  numkey = numbersFromKey(key)\n";
       str += "  vector<string> matrix\n";
+      str += "  for 0 <= i < key.length\n";
+      str += "    matrix[i] = \"\"\n";
       str += "  columnSize = ciphertext.length / numkey.length\n";
       str += "  for 0 <= i < numkey.length\n";
       str += "    j = numkey[i]]\n";
       str += "    if(j < ciphertext.length % numkey.length)\n";
-      str += "      matrix[j] = ciphertext[0...columnSize]\n";
-      str += "      ciphertext = ciphertext[columnSize...]\n";
-      str += "    else\n";
       str += "      matrix[j] = ciphertext[0...columnSize + 1]\n";
       str += "      ciphertext = ciphertext[columnSize + 1...]\n";
+      str += "    else\n";
+      str += "      matrix[j] = ciphertext[0...columnSize]\n";
+      str += "      ciphertext = ciphertext[columnSize...]\n";
       str += "  result = \"\"\n";
       str += "  for 0 <= i < ciphertext.length\n";
       str += "    result += matrix[i % key.length][i / key.length]\n";
@@ -88,16 +90,6 @@ public:
                         std::pair<char, int> rhs)
    {
       return std::get<0>(lhs) < std::get<0>(rhs);
-   }
-
-   /**********************************************************
-    * numIndexSorter :: Simple sorting predicate to arrange the
-    * numIndexPairs according to the index value.
-    **********************************************************/
-   static bool numIndexSorter(std::pair<int, int> lhs,
-                    std::pair<int, int> rhs)
-   {
-      return std::get<1>(lhs) < std::get<1>(rhs);
    }
 
    /**********************************************************
@@ -120,31 +112,10 @@ public:
       std::stable_sort(charIndexPairs.begin(), charIndexPairs.end(),
                        charIndexSorter);
 
-      // Now replace the chars with the number.
-      std::vector<std::pair<int, int> > numIndexPairs;
       for (int i = 0; i < keySize; ++i)
-      {
-         std::pair<int, int> p(i + 1, std::get<1>(charIndexPairs[i]));
-         numIndexPairs.push_back(p);
-      }
-
-      std::stable_sort(numIndexPairs.begin(), numIndexPairs.end(),
-                       numIndexSorter);
-
-      for (int i = 0; i < keySize; ++i)
-         results.push_back(std::get<0>(numIndexPairs[i]));
+         results.push_back(std::get<1>(charIndexPairs[i]));
 
       return results;
-   }
-
-   /**********************************************************
-    * columnNumSorter :: Simple sorting predicate to arrange
-    * the columNumPairs by the num value.
-   **********************************************************/
-   static bool columnNumSorter(std::pair<std::string, int> lhs,
-                                 std::pair<std::string, int> rhs)
-   {
-      return std::get<1>(lhs) < std::get<1>(rhs);
    }
 
    /**********************************************************
@@ -171,22 +142,10 @@ public:
       // get the keyNumbers to know how to rearrange the columns
       std::vector<int> keyNumbers = numbersFromKey(password);
 
-      // pair the columns with the keyNumbers so they can be rearranged
-      std::vector<std::pair<std::string, int> > columnNumPairs;
-      for (int i = 0; i < passwordSize; ++i)
-      {
-         std::pair<std::string, int> p(matrix[i], keyNumbers[i]);
-         columnNumPairs.push_back(p);
-      }
-
-      // Rearrange the columns
-      std::stable_sort(columnNumPairs.begin(), columnNumPairs.end(),
-                       columnNumSorter);
-
       // Concatenate the rearranged columns into one cipherText string.
       std::string cipherText = "";
       for (int i = 0; i < passwordSize; ++i)
-         cipherText += std::get<0>(columnNumPairs[i]);
+         cipherText += matrix[keyNumbers[i]];
 
       return cipherText;
    }
@@ -198,34 +157,39 @@ public:
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      std::vector<int> numkey = numbersFromKey(password);
-      int numkeyLength = numkey.size();
-      std::vector<std::string> matrix;
-      int columnSize = plainText.length() / numkeyLength;
 
-      for (int i = 0; i < numkeyLength; i++)
+      std::string text = cipherText;
+      std::vector<int> numkey = numbersFromKey(password);
+      std::vector<std::string> matrix;
+
+      int numColumns = numkey.size();
+      int columnSize = text.length() / numColumns + 1;
+      int numLargeColumns = text.length() % numColumns;
+
+      matrix.resize(numColumns, "");
+
+      int cipherTextLength = text.length();
+      for (int i = 0; i < numColumns; ++i)
       {
          int j = numkey[i];
-         if (j < plainText.length() % numkeyLength)
+         if (j < cipherTextLength % numColumns)
          {
-            matrix[j] = plainText.substr(0,columnSize);
-            plainText = plainText.substr(columnSize);
+            matrix[j] = text.substr(0, columnSize);
+            text = text.substr(columnSize);
          }
          else
          {
-            matrix[j] = plainText.substr(0, ++columnSize);
-            plainText = plainText.substr(++columnSize);
+            matrix[j] = text.substr(0, columnSize - 1);
+            text = text.substr(columnSize - 1);
          }
       }
-      
-      std::string result = "";
-      int plainLength = plainText.length();
-      for (int i = 0; i < plainLength; i++)
+      std::string plainText = "";
+      for (int i = 0; i < cipherTextLength; ++i)
       {
-         result += matrix[i % password.length()][i / password.length()];
+         plainText += matrix[i % numColumns][i / numColumns];
       }
-      return result;
+
+      return plainText;
    }
 };
 

@@ -37,9 +37,9 @@ public:
       std::string str;
 
       // The encrypt pseudocode
-      str =  "Encryption pseudocode\n";
+      str +=  "Encryption pseudocode\n";
       str += "string plaintext\n";
-      str =  "key = passwordToKey(password)\n";
+      str +=  "key = passwordToKey(password)\n";
       str += "the key is a 5x5 or a 5x6 array\n";
       str += "for every letter in plaintext\n";
       str += "for rows in key\n";
@@ -49,28 +49,28 @@ public:
 
       // The decrypt pseudocode
       str += "Decryption pseudocode\n";
-      str =  "key = passwordToKey(password)\n";
+      str +=  "key = passwordToKey(password)\n";
       str += "for every 2 numbers in cipher message\n";
       str += "every word is space seperated so if the first character is a blank space a space will be used and the count will increase by 1\n";
       str += "decoded message += key[row+1][col+1]\n";
 
       // helper function Password to key
-      str =  "password_to_key pseudocode\n";
-      str =  "passwordToKey(password)\n";
-      str =  "loop through whole password: for (int i = 0; i < password.size(); i++)\n";
-      str =  "    add char to row and couumn\n";
-      str =  "    if the number of columns reached is 5 then go to the next column\n";
-      str =  "    next coulmn\n";
-      str =  "return key\n";
+      str +=  "password_to_key pseudocode\n";
+      str +=  "passwordToKey(password)\n";
+      str +=  "loop through whole password: for (int i = 0; i < password.size(); i++)\n";
+      str +=  "    add char to row and couumn\n";
+      str +=  "    if the number of columns reached is 5 then go to the next column\n";
+      str +=  "    next coulmn\n";
+      str +=  "return key\n";
 
-      str =  "if password was 123451abcde2fghij3lmnop4qrstu5vwxyz\n";
-      str =  "Table\n";
-      str =  "0 12345\n";
-      str =  "1 abcde\n";
-      str =  "2fghij\n";
-      str =  "3 klmno\n";
-      str =  "4 pqrst\n";
-      str =  "5 uvwxy/z\n";
+      str +=  "if password was 123451abcde2fghij3lmnop4qrstu5vwxyz\n";
+      str +=  "Table\n";
+      str +=  "0 12345\n";
+      str +=  "1 abcde\n";
+      str +=  "2 fghij\n";
+      str +=  "3 klmno\n";
+      str +=  "4 pqrst\n";
+      str +=  "5 uvwxy/z\n";
 
 
       return str;
@@ -121,14 +121,20 @@ public:
    }
 
    /**********************************************************
-    * DECRYPT
-    * TODO: ADD description
+    * DECRYPT :: use the key to lookup the characters
+    * represented by each two number pair in cipherText.
     **********************************************************/
    virtual std::string decrypt(const std::string & cipherText,
                                const std::string & password)
    {
-      std::string plainText = cipherText;
-      // TODO - Add your code here
+
+      std::string plainText = "";
+      auto key = makeKey(password);
+      for(int i = 0; i < cipherText.size(); ++i){
+         int c1 = cipherText[i] - '0';
+         int c2 = cipherText[++i] - '0';
+         plainText += key[(c1 - 1) * 6 + (c2 - 1)];
+      }
       return plainText;
    }
 };
