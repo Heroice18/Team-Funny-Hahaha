@@ -206,7 +206,11 @@ public:
       convertPassword(password, key, nonce);
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
-      std::string salsaText = std::to_string(out[0]);
+      std::string salsaText = "";
+      for (int i = 0; i < 16; i++)
+      {
+         salsaText += std::to_string(out[i]);
+      }
       for (int i = 0; i < plainText.length(); i++)
       {
          cipherText[i] = cipherText[i] ^ salsaText[i];  
@@ -228,7 +232,11 @@ public:
       convertPassword(password, key, nonce);
       uint32_t * in = generateInitialState(key, nonce, 0);
       salsa20(out, in);
-      std::string salsaText = std::to_string(out[0]);
+      std::string salsaText = "";
+      for (int i = 0; i < 16; i++)
+      {
+         salsaText += std::to_string(out[i]);
+      }
       for (int i = 0; i < cipherText.length(); i++)
          plainText[i] = plainText[i] ^ salsaText[i];
       return plainText;
