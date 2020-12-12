@@ -14,9 +14,9 @@ class Cipher01 : public Cipher
 {
 public:
    virtual std::string getPseudoAuth()  { return "Brandon Ison"; }
-   virtual std::string getCipherName()  { return "Vigenère Cipher"; }
+   virtual std::string getCipherName()  { return "Vigenere Cipher"; }
    virtual std::string getEncryptAuth() { return "Ethan Nelson"; }
-   virtual std::string getDecryptAuth() { return "Brandon Ison"; }
+   virtual std::string getDecryptAuth() { return "Thomas"; }
 
    /***********************************************************
     * GET CIPHER CITATION
